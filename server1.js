@@ -7,7 +7,7 @@ const mongoDB = require('./config/database');
 const Api = require('./routers/index');
 const {attachWebSocket,sendNotificationToAll} = require('./websocket/websocket');
 
-const app = express();
+const app = express(); 
 const server = http.createServer(app);
 
 const port = 3000;
