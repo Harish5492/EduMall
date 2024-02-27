@@ -108,3 +108,12 @@ textarea::placeholder{
 .bigit{
     height:90px
 }
+img{
+    height: 30px;
+        margin: 20px;
+        cursor: pointer;
+    
+}
+.btn{
+    margin: 10px;
+}

@@ -10,6 +10,7 @@ import { Coursedetail } from "./CourseInfo.jsx";
 import { LessonDetails } from "./LessonsInfo";
 import * as courseFunctions from "./courseFunctions";
 import { AddLessonForm } from "./AddLessonForm";
+// import add_form from "../../../../public/assets/images/add_form.svg";
 
 const CourseDetail = () => {
     const { courseId } = useParams();
@@ -36,7 +37,7 @@ const CourseDetail = () => {
         try {
             setFetchingLessons(true);
             const response = await FetchLessons(token, courseId);
-            console.log("this is lesson resp",response)
+            console.log("this is lesson resp", response)
             setLessons(response.data.lesson);
         } catch (error) {
             console.error("Error fetching lessons", error);
@@ -55,6 +56,19 @@ const CourseDetail = () => {
             },
         ]);
     };
+
+    //TODO: Add a function to handle deleting a lessonform
+
+    // const handleAddLessonClick = () => {
+    //     setLessonForms((prevForms) => [
+    //         ...prevForms,
+    //         {
+    //             title: '',
+    //             videoUrl: '',
+    //             content: '',
+    //         },
+    //     ]);
+    // };
     const handleSubmitChanges = async () => {
         const updatedValues = {
             title: courseDetails.title,
@@ -76,6 +90,7 @@ const CourseDetail = () => {
         courseFunctions.addNewLesson(token, index, lessonForms, courseId, setLessonForms, handleFetchLessons, toast);
     };
 
+
     const handleTabChange = (tab) => {
         setActiveTab(tab);
         if (tab === "lessons") {
@@ -84,7 +99,7 @@ const CourseDetail = () => {
     };
 
     useEffect(() => {
-       
+
         fetchCourseDetails();
     }, [courseId]);
 
@@ -142,10 +157,10 @@ const CourseDetail = () => {
                                             Lessons
                                         </a>
                                     </li>
-                                ): null
+                                ) : null
 
-                                
-                                }
+
+                            }
                         </ul>
                     </div>
                     <div className="card-body">
@@ -163,7 +178,7 @@ const CourseDetail = () => {
 
                         {activeTab === "lessons" ? (
                             <>
-                               
+
                                 {lessons?.length > 0 && lessons ? (
                                     lessons.map((lesson, i) => (
                                         <LessonDetails
@@ -184,19 +199,19 @@ const CourseDetail = () => {
                                         handleAddNewLesson={handleAddNewLesson}
                                     />
                                 ))}
+                                {
+                                    role === "admin" && lessons ? (
+
+                                        <img src="/assets/images/add_form.svg" onClick={handleAddLessonClick} />
+                                    ) :
+                                        null
+
+                                }
                             </>
                         ) : null}
                     </div>
-                    {
-                        role === "admin" && lessons ? (
-                            <button type="button" className="add_lesson btn btn-success" onClick={handleAddLessonClick}>
-                                Add Lesson
-                            </button>
-                        ):
-                    null
-                        
-}
-                    
+
+
                 </div>
             </div>
 
