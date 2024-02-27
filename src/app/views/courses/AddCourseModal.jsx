@@ -7,15 +7,15 @@ import { AddCource } from "../ApiBackend/ApiBackend";
 import "./AddCourseModal.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useEffect ,useState} from 'react';
-import { useSelector } from'react-redux';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useRef } from 'react';
 
 
 const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
   const token = useSelector((state) => state.authToken);
-  const [courseAdded, setCourseAdded] = useState(false);
-  const isMountedRef= useRef(true);
+  // const [courseAdded, setCourseAdded] = useState(false);
+  // const isMountedRef = useRef(true);
 
   const formik = useFormik({
     initialValues: {
@@ -43,40 +43,37 @@ const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
       level: Yup.string().required('Level is required'),
     }),
     onSubmit: async (values) => {
-      const res = await AddCource(token,values);
+      const res = await AddCource(token, values);
       console.log(res, "AddCource");
-      if (res.status === true) {
-        console.log("cource added successfully");
+      if (res.message === 'added') {
+        console.log("cource addelllllllllld successfully");
         toast.success("Cource Added Successfully", {
           position: "top-center",
           autoClose: 2000,
           theme: "colored"
         })
-        // onClose();
-        // onAddCourse();
-        setCourseAdded(true);
-        
+        handleSubmit()
+
       }
 
     },
   });
-  const handleCloseModal = () => {
+
+  const handleSubmit = () => {
+
+    onAddCourse()
     onClose()
   }
+
+
   useEffect(() => {
-    if (isMountedRef.current && courseAdded && isOpen) {
-      // formik.resetForm();
-    onAddCourse();
-    onClose();
-    }
-    return () => {
-      isMountedRef.current = false;
-    };
-  }, [courseAdded,onAddCourse,onClose]);
+    formik.resetForm();
+  }, [isOpen])
+
 
   return (
     <>
-      <Modal show={isOpen} onHide={handleCloseModal} centered>
+      <Modal show={isOpen} onHide={onClose} centered>
         <Modal.Header>
           <Modal.Title> Add Course</Modal.Title>
           <IoCloseSharp onClick={onClose} style={{ cursor: 'pointer' }} />
@@ -99,7 +96,7 @@ const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
               </Form.Control.Feedback>
             </FormGroup>
 
-           
+
 
             <FormGroup className="mb-3">
               <FormLabel htmlFor="instructor">Instructor</FormLabel>

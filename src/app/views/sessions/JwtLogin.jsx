@@ -2,14 +2,16 @@ import { LoadingButton } from '@mui/lab';
 import { Card, Checkbox, Grid, TextField } from '@mui/material';
 import { Box, styled, useTheme } from '@mui/material';
 import { Paragraph } from 'app/components/Typography';
-import useAuth from 'app/hooks/useAuth';
+// import useAuth from 'app/hooks/useAuth';
 import { Formik } from 'formik';
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { LoginApi } from "../ApiBackend/ApiBackend";
 import { useDispatch } from 'react-redux';
-import { setAuthToken } from '../../../redux/slices/authSlice';
+import { removeToken, setAuthToken, setRole } from '../../../redux/slices/authSlice';
+import { Toast } from 'bootstrap';
+import { toast } from 'react-toastify';
 
 const FlexBox = styled(Box)(() => ({ display: 'flex', alignItems: 'center' }));
 
@@ -46,8 +48,10 @@ const initialValues = {
 const validationSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, 'Password must be 6 character length')
-    .required('Password is required!'),
-    usernameOrEmail: Yup.string().required('Username or Email is required'),});
+    .required('Password is required!')
+  ,
+  usernameOrEmail: Yup.string().required('Username or Email is required'),
+});
 
 const JwtLogin = () => {
   const theme = useTheme();
@@ -55,18 +59,25 @@ const JwtLogin = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  const { login } = useAuth();
-
-  const handleFormSubmit = async (values) => {
-    console.log(values,"values");
+  const handleFormSubmit = async (values, { setErrors, setSubmitting, resetForm }) => {
+    console.log("valuesssss", values);
     setLoading(true);
     try {
-      const response = await LoginApi(values)
-      console.log(response,"responseresponse");
-      if(response.status === true){
+      setSubmitting(false);
+      const response = await LoginApi(values);
+      console.log(response, "responseresponse");
+      if (response.status === true) {
+
         localStorage.setItem("isLogin", true);
-        navigate('/');
-        dispatch(setAuthToken(response.token)); 
+        navigate('/dashboard');
+        dispatch(setRole(response.role))
+        dispatch(setAuthToken(response.token));
+
+      }
+      else {
+        setErrors({ password: "Invalid Username or Password" });
+        setLoading(false);
+
       }
     } catch (e) {
       setLoading(false);
@@ -102,10 +113,12 @@ const JwtLogin = () => {
                       onBlur={handleBlur}
                       value={values.usernameOrEmail}
                       onChange={handleChange}
-                      helperText={touched.usernameOrEmail && errors.usernameOrEmail}
-                      error={Boolean(errors.usernameOrEmail && touched.usernameOrEmail)}
+                      helperText={(touched.usernameOrEmail && errors.usernameOrEmail)}
+                      error={Boolean((errors.usernameOrEmail && touched.usernameOrEmail) || (errors.password && touched.password))}
                       sx={{ mb: 3 }}
                     />
+
+
 
                     <TextField
                       fullWidth
@@ -117,10 +130,11 @@ const JwtLogin = () => {
                       onBlur={handleBlur}
                       value={values.password}
                       onChange={handleChange}
-                      helperText={touched.password && errors.password}
-                      error={Boolean(errors.password && touched.password)}
+                      helperText={(touched.password && errors.password) || (touched.usernameOrEmail && errors.usernameOrEmail)}
+                      error={Boolean((errors.password && touched.password) || (errors.usernameOrEmail && touched.usernameOrEmail))}
                       sx={{ mb: 1.5 }}
                     />
+
 
                     <FlexBox justifyContent="space-between">
                       <FlexBox gap={1}>

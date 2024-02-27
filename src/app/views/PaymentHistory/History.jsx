@@ -1,11 +1,9 @@
 
 import "./index.css";
 import React, { useState, useEffect } from 'react';
-import { GetAllDetails, GetPaymentHistory } from "../ApiBackend/ApiBackend"
+import { GetPaymentHistory } from "../ApiBackend/ApiBackend"
 import Loading from "app/components/MatxLoading";
-import { NavLink } from "react-router-dom";
-import { it } from "date-fns/locale";
-import { func } from "prop-types";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./History.css";
 import { useSelector } from "react-redux";
 
@@ -21,6 +19,8 @@ const History = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [signal, setSignal] = useState(null);
   const [debounceTime, setDebounceTime] = useState(null);
+  const [roleStatus, setroleStatus] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -29,26 +29,34 @@ const History = () => {
     if (debounceTime) {
       clearTimeout(debounceTime);
     }
-    const timeOut= setTimeout(() => {
+    const timeOut = setTimeout(() => {
       fetchData();
     }, 800);
-    // fetchData();
     setDebounceTime(timeOut);
     return () => {
       controller.abort();
       clearTimeout(timeOut);
 
     }
-  }, [currentPage,searchQuery]);
+  }, [currentPage, searchQuery]);
 
   async function fetchData() {
     try {
-      const response = await GetPaymentHistory(token,pageItems, currentPage,searchQuery,signal);
-      // console.log("this is strepsisf;oeahrfi", response);
+      const response = await GetPaymentHistory(token, pageItems, currentPage, searchQuery, signal);
+      if (!response.data.status) {
+        setroleStatus(response.data.status);
+        setTimeout(() => {
+          navigate('/dashboard');
+          alert("You are being redirected to the dashboard");
+        }, 1000);
+
+
+      }
       if (!response.status) {
         return console.error('Network response was not oayyyyyyyyyyyyk');
       }
-     
+
+
       setTotalResult(response.data.totalRecords);
       setCurrentItems(response.data.details);
       setLoading(false);
@@ -62,17 +70,14 @@ const History = () => {
     setCurrentPage(pageNumber);
   };
   const handleSearchChange = (e) => {
-    // Clear the previous debounce timeout
     if (debounceTime) {
       clearTimeout(debounceTime);
     }
 
-    // Set a new timeout for debouncing
     const timeoutId = setTimeout(() => {
       setSearchQuery(e.target.value);
-    }, 800); // Adjust the debounce time as needed
+    }, 800);
 
-    // Save the timeout ID in state
     setDebounceTime(timeoutId);
   };
 
@@ -130,51 +135,53 @@ const History = () => {
   };
   return (
     <>
-   
+      <div id='page-content' style={{ paddingTop: "30px" }} >
+        <div className="payment-history-header">
+          <h1 >Payment History</h1>
+          <div className="search-filter">
 
-        <div>
-          <div className="payment-history-header">
-            <h1 >Payment History</h1>
-            <div className="search-filter">
-
-              <form className="d-flex" role="search" onSubmit={(e) => {
-                e.preventDefault();
-                fetchData();
-              }}>
-                <input className="form-control me-2" type="search" value={searchQuery}
+            <form className="d-flex" role="search" onSubmit={(e) => {
+              e.preventDefault();
+              fetchData();
+            }}>
+              <input className="form-control me-2" type="search" value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
                   handleSearchChange();
-                 
+
                 }} placeholder="Search" aria-label="Search" />
-              </form>
-            </div>
+            </form>
           </div>
-          <table className="courses-table">
+        </div>
+       
+        <div className="table-responsive" style={{
+          width: "100%",
+          padding: "2%"
+        }}>
+          <table className="table fl-table table-hover">
             <thead>
-              <tr>
-                <th>Status</th>
-                <th>User ID</th>
-                <th>Email</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Courses</th>
+              <tr className="bg-light">
+                <th scope="col" width="5%">Status</th>
+                <th scope="col" width="20%">Id</th>
+                <th scope="col" width="20%">Date</th>
+                <th scope="col" width="20%">Email</th>
+                <th scope="col" width="20%">Date</th>
+                <th scope="col" width="20%">Courses</th>
 
               </tr>
             </thead>
             <tbody>
-            {currentItems?.length > 0 && (
-              currentItems?.filter((payment) => {
-                const lowercaseSearch = searchQuery.toLowerCase();
-                return (
-                  payment.status.toLowerCase().includes(lowercaseSearch) ||
-                  payment.email.toLowerCase().includes(lowercaseSearch)) ||
-                  payment.amount.toLowerCase().includes(lowercaseSearch)
-              })
-                .map((payment) => (
+              {currentItems?.length > 0 && (
+                currentItems?.filter((payment) => {
+                  const lowercaseSearch = searchQuery.toLowerCase();
+                  return (
+                    payment.status.toLowerCase().includes(lowercaseSearch) ||
+                    payment.email.toLowerCase().includes(lowercaseSearch)) ||
+                    payment.amount.toLowerCase().includes(lowercaseSearch)
+                }).map((payment) => (
                   <tr key={payment._id}>
                     <td>
-                      <span className={`${payment.status === 'Success' ? 'badge text-bg-success' : 'badge text-bg-danger'}`}>
+                      <span className={`${payment.status === 'Success' ? 'badge text-bg-success' : 'badge text-bg-danger'} d-flex justify-content-center`}>
                         {payment.status}
                       </span>
                     </td>
@@ -203,17 +210,18 @@ const History = () => {
                     <td>{payment.courseBought.length}</td>
                   </tr>
                 ))
-            )}
-            {currentItems?.length === 0 && (
+              )}
+              {currentItems?.length === 0 && (
                 <tr>
-                <td colSpan="6" style={{
-                  color: "grey",
-                textAlign:"center"}}>No Results Found</td>
+                  <td colSpan="6" style={{
+                    color: "grey",
+                    textAlign: "center"
+                  }}>No Results Found</td>
                 </tr>
               )}
-            
             </tbody>
           </table>
+        </div>
         {totalResult >= 8 && (
           <nav aria-label="Page navigation example" className="nav-pagee">
             <ul className="pagination">
@@ -232,7 +240,7 @@ const History = () => {
             </ul>
           </nav>
         )}
-        </div>
+      </div >
     </>
   );
 };

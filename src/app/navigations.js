@@ -1,9 +1,45 @@
-export const navigations = [
-  { name: "Dashboard", path: "/dashboard/default", icon: "dashboard" },
-  { name: "Courses", path: "/courses", icon: "dashboard" },
-  { name: "Payment History", path: "/PaymentHistory", icon: "history" },
-  { name: "Affiliate Links", path: "/AffiliateLinks", icon: "history" },
+// import { useSelector } from "react-redux/es/hooks/useSelector";
+// const role = useSelector((state) => state.role);
+import { roleValues } from "./utils/constant";
 
+export const navigations = [
+  {
+    name: "Dashboard",
+    path: "/dashboard",
+    icon: "dashboard",
+    role: [roleValues.Admin, roleValues.SubAdmin],
+  },
+  {
+    name: "Courses",
+    path: "/courses",
+    icon: "dashboard",
+    role: [roleValues.Admin,roleValues.SubAdmin],
+  },
+  {
+    name: "Payment History",
+    path: "/PaymentHistory",
+    icon: "history",
+    role: [roleValues.Admin],
+  },
+  {
+    name: "Affiliate Links",
+    path: "/AffiliateLinks",
+    icon: "history",
+    role: [roleValues.Admin],
+  },
+  {
+    name: "Rewards",
+    path: "/Rewards",
+    icon: "history",
+    role: [roleValues.SubAdmin],
+  },
+  {
+    name: "Requests",
+    path: "/Requests",
+    icon: "history",
+    role: [roleValues.Admin],
+  },
+];
   // { label: "PAGES", type: "label" },
 //   {
 //     name: "Session/Auth",
@@ -56,4 +92,4 @@ export const navigations = [
 //     type: "extLink",
 //     path: "http://demos.ui-lib.com/matx-react-doc/",
 //   },
- ];
+//  ];

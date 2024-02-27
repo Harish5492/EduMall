@@ -1,4 +1,7 @@
 import Mock from '../mock';
+import { Profile } from '../../app/views/ApiBackend/ApiBackend';
+import { useSelector } from 'react-redux';
+import React from "react";
 
 // const JWT_SECRET = 'jwt_secret_key';
 // const JWT_VALIDITY = '7 days';
@@ -14,6 +17,9 @@ const userList = [
     age: 25
   }
 ];
+
+
+ 
 
 // FOLLOWING CODES ARE MOCK SERVER IMPLEMENTATION
 // YOU NEED TO BUILD YOUR OWN SERVER
@@ -34,6 +40,7 @@ Mock.onPost('/api/auth/login').reply(async (config) => {
     return [500, { message: 'Internal server error' }];
   }
 });
+
 
 Mock.onPost('/api/auth/register').reply((config) => {
   try {

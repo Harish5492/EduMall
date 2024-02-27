@@ -7,16 +7,22 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store';
 import 'perfect-scrollbar/css/perfect-scrollbar.css';
+import { WebSocketProvider } from 'app/contexts/WebSocketContext';
 
 const root = createRoot(document.getElementById('root'));
+const websocketUrl = "ws://10.10.2.82:3000";
 
 root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <StyledEngineProvider injectFirst>
-        <BrowserRouter>
+        <WebSocketProvider url={websocketUrl}>
+        <BrowserRouter >
+          
           <App />
-        </BrowserRouter>
+
+          </BrowserRouter>
+          </WebSocketProvider>
       </StyledEngineProvider>
     </PersistGate>
   </Provider>

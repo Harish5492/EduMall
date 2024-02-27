@@ -4,6 +4,7 @@ import React, { Fragment } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Paragraph, Span } from '../Typography';
 import MatxVerticalNavExpansionPanel from './MatxVerticalNavExpansionPanel';
+import { useSelector } from 'react-redux';
 
 const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
   fontSize: '12px',
@@ -72,52 +73,21 @@ const BadgeValue = styled('div')(() => ({
   overflow: 'hidden',
   borderRadius: '300px',
 }));
+const RoleData = { "admin": 20, "subAdmin": 10, "User": 0 };
 
 const MatxVerticalNav = ({ items }) => {
   const { settings } = useSettings();
+  const roles= useSelector((state) => state.role);
   const { mode } = settings.layout1Settings.leftSidebar;
 
+  const filterRoles = items.filter((item) => {
+    return item.role.includes(RoleData[roles]);
+})
   const renderLevels = (data) => {
+    console.log("this is in dataa", data);
+    console.log("this is in itmssss", items);
+    
     return data.map((item, index) => {
-      if (item.type === 'label')
-        return (
-          <ListLabel key={index} mode={mode} className="sidenavHoverShow">
-            {item.label}
-          </ListLabel>
-        );
-
-      if (item.children) {
-        return (
-          <MatxVerticalNavExpansionPanel mode={mode} item={item} key={index}>
-            {renderLevels(item.children)}
-          </MatxVerticalNavExpansionPanel>
-        );
-      } else if (item.type === 'extLink') {
-        return (
-          <ExternalLink
-            key={index}
-            href={item.path}
-            className={`${mode === 'compact' && 'compactNavItem'}`}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <ButtonBase key={item.name} name="child" sx={{ width: '100%' }}>
-              {(() => {
-                if (item.icon) {
-                  return <Icon className="icon">{item.icon}</Icon>;
-                } else {
-                  return <span className="item-icon icon-text">{item.iconText}</span>;
-                }
-              })()}
-              <StyledText mode={mode} className="sidenavHoverShow">
-                {item.name}
-              </StyledText>
-              <Box mx="auto"></Box>
-              {item.badge && <BadgeValue>{item.badge.value}</BadgeValue>}
-            </ButtonBase>
-          </ExternalLink>
-        );
-      } else {
         return (
           <InternalLink key={index}>
             <NavLink
@@ -164,11 +134,11 @@ const MatxVerticalNav = ({ items }) => {
             </NavLink>
           </InternalLink>
         );
-      }
+      // }
     });
   };
 
-  return <div className="navigation">{renderLevels(items)}</div>;
+  return <div className="navigation">{renderLevels(filterRoles)}</div>;
 };
 
 export default React.memo(MatxVerticalNav);

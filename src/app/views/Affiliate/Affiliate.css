@@ -1,6 +1,8 @@
-.buttoon{
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+/* .buttoon{
     display: flex;
-        /* justify-content: space-between; */
+
         align-items: baseline;
         
 }
@@ -23,9 +25,349 @@ ul.pagination li {
 
 }
 
-.nav-pagee {
+ .nav-pagee {
     position: fixed;
     justify-content: center;
     margin-left: 40%;
     margin-right: 40%
 }
+
+body{
+    font-family: ' ', sans-serif;
+    
+}  */
+
+/* * {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+} */
+
+body {
+    font-family: Helvetica;
+    -webkit-font-smoothing: antialiased;
+    background: rgba(71, 147, 227, 1);
+   
+}
+
+h2 {
+    
+    text-align: center;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: black;
+    padding: 20px 0;
+}
+
+/* Table Styles */
+
+/* .table-wrapper {
+    margin: 10px 70px 70px;
+    box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
+} */
+
+.fl-table {
+    border-radius: 10px;
+    padding-left: 10px;
+    font-size: 23px;
+    font-weight: 20px;
+border:solid 1px;
+    /* border-collapse: ; */
+    width: 100%;
+    /* max-width: 100%; */
+    white-space: nowrap;
+    /* background-color: yellow; */
+    height:50%;
+}
+
+
+.fl-table th {
+    text-align: center;
+    padding: 5px;
+    font-size: 18px;
+    width: 80px;
+}
+
+.fl-table td {
+    text-align: center;
+    padding: 5px;
+    border-right: 1px solid #e0e0e8 ;
+    border-top: 1px solid;
+    font-size: 15px;
+}
+.fl-table td:nth-last-child(1){
+    border-right: 1px solid ;
+    /* width: 18%; */
+   
+}
+
+.fl-table thead th {
+    color: #ffffff;
+    background: #3b7e38;
+}
+
+
+.fl-table thead th:nth-child(odd) {
+    color: #ffffff;
+    background: #233343;
+
+}
+
+.fl-table tr:nth-child(even) {
+    background: #F8F8F8;
+}
+
+/* Responsive */
+
+@media (max-width: 800px) {
+    .fl-table {
+        display: block;
+        width: 100%;
+    }
+
+    /* .table-wrapper:before {
+        content: "Scroll horizontally >";
+        display: flex;
+        text-align: right;
+        font-size: 25px;
+        color: yellow;
+        padding: 0 0 10px;
+    } */
+
+    .fl-table thead,
+    .fl-table tbody,
+    .fl-table thead th {
+        display: block;
+    }
+
+    /* .fl-table thead th:last-child {
+        border-bottom: none;
+    } */
+
+    .fl-table thead {
+        float: left;
+    }
+
+    .fl-table tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+    }
+
+    .fl-table td,
+    .fl-table th {
+        padding: 10px .400rem .400rem .400rem;
+        height: 60px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        font-size: 20px;
+        text-overflow: ellipsis;
+    }
+
+    .fl-table thead th {
+        text-align: left;
+        border-bottom: 1px solid #f7f7f9;
+    }
+
+    .fl-table tbody tr {
+        display: table-cell;
+    }
+
+    .fl-table tbody tr:nth-child(odd) {
+        background: none;
+    }
+
+    .fl-table tr:nth-child(even) {
+        background: transparent;
+        
+    }
+
+    .fl-table tr td:nth-child(odd) {
+        background: #F8F8F8;
+        border-right: 1px solid #E6E4E4;
+                border-left:  1px solid ;
+    }
+
+    .fl-table tr td:nth-child(even) {
+        border-right: 1px solid #E6E4E4;
+                        border-left: 1px solid;
+    }
+
+    .fl-table tbody td {
+        display: block;
+        text-align: center;
+    }
+}
+ul.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+ul.pagination li {
+    cursor: pointer;
+}
+
+.search-filter {
+    margin-left: 10px;
+    
+
+}
+.btn{
+    width: 45%;
+    font-size: 80%;
+    margin: 1px;
+}
+.nav-pagee {
+    display: contents;
+    position: fixed;
+    justify-content: center;
+    margin-left: 40%;
+    margin-right: 40%
+    
+}
+
+.badge {
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1;
+    padding: .375rem .5625rem;
+    font-weight: 8px
+}
+
+
+/* .search{
+  
+  top:6px;
+  left:10px;
+} */
+/* 
+.form-control{
+    
+    border:none;
+    padding-left:32px;
+} */
+
+/* .form-control:focus{
+    
+    border:none;
+    box-shadow:none;
+} */
+/* 
+.green{
+    
+    color:green;
+} */
+/* 
+ body {
+     background-color: #f9f9fa
+ }
+
+ .flex {
+     -webkit-box-flex: 1;
+     -ms-flex: 1 1 auto;
+     flex: 1 1 auto
+ }
+
+ @media (max-width:991.98px) {
+     .padding {
+         padding: 1.5rem
+     }
+ }
+
+ @media (max-width:767.98px) {
+     .padding {
+         padding: 1rem
+     }
+ }
+
+ .padding {
+     padding: 5rem
+ }
+
+ .card {
+     box-shadow: none;
+     -webkit-box-shadow: none;
+     -moz-box-shadow: none;
+     -ms-box-shadow: none
+ }
+
+ .pl-3,
+ .px-3 {
+     padding-left: 1rem !important
+ }
+
+ .card {
+     position: relative;
+     display: flex;
+     flex-direction: column;
+     min-width: 0;
+     word-wrap: break-word;
+     background-color: #fff;
+     background-clip: border-box;
+     border: 1px solid #d2d2dc;
+     border-radius: 0
+ }
+
+ .card .card-title {
+     color: #000000;
+     margin-bottom: 0.625rem;
+     text-transform: capitalize;
+     font-size: 0.875rem;
+     font-weight: 500
+ }
+
+ .card .card-description {
+     margin-bottom: .875rem;
+     font-weight: 400;
+     color: #76838f
+ }
+
+ p {
+     font-size: 0.875rem;
+     margin-bottom: .5rem;
+     line-height: 1.5rem
+ }
+
+ .table-responsive {
+     display: block;
+     width: 100%;
+     overflow-x: auto;
+     -webkit-overflow-scrolling: touch;
+     -ms-overflow-style: -ms-autohiding-scrollbar
+ }
+
+ .table,
+ .jsgrid .jsgrid-table {
+     width: 100%;
+     max-width: 100%;
+     margin-bottom: 1rem;
+     background-color: transparent
+ }
+
+ .table thead th,
+ .jsgrid .jsgrid-table thead th {
+     border-top: 0;
+     border-bottom-width: 1px;
+     font-weight: 500;
+     font-size: .875rem;
+     text-transform: uppercase
+ }
+
+ .table td,
+ .jsgrid .jsgrid-table td {
+     font-size: 0.875rem;
+     padding: .875rem 0.9375rem
+ }
+
+ .badge {
+     border-radius: 0;
+     font-size: 12px;
+     line-height: 1;
+     padding: .375rem .5625rem;
+     font-weight: normal
+ } */

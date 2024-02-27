@@ -44,3 +44,55 @@ span.badge.text-bg-success {
     margin-left:40%;
     margin-right:40%
 }
+
+.fl-table {
+    border-radius: 10px;
+    padding-left: 10px;
+    font-size: 23px;
+    font-weight: 20px;
+    border: solid 1px;
+    /* border-collapse: ; */
+    width: 100%;
+    /* max-width: 100%; */
+    white-space: nowrap;
+    /* background-color: yellow; */
+    height: 50%;
+}
+
+
+.fl-table th {
+    text-align: center;
+    padding: 5px;
+    font-size: 18px;
+    width: 80px;
+}
+
+.fl-table td {
+    text-align: center;
+    padding: 5px;
+    border-right: 1px solid #e0e0e8;
+    border-top: 1px solid;
+    font-size: 15px;
+}
+
+.fl-table td:nth-last-child(1) {
+    border-right: 1px solid;
+    /* width: 18%; */
+
+}
+
+.fl-table thead th {
+    color: #ffffff;
+    background: #3b7e38;
+}
+
+
+.fl-table thead th:nth-child(odd) {
+    color: #ffffff;
+    background: #233343;
+
+}
+
+.fl-table tr:nth-child(even) {
+    background: #F8F8F8;
+}

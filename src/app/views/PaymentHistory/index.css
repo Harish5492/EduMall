@@ -1,11 +1,11 @@
 .centered-container {
     display: flex;
-    justify-content: center; /* Horizontally center */
-    align-items: center; /* Vertically center */
-    height: 100vh; /* Set height of container to full viewport height */
-  }
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    }
   
-  /* Apply styles to the centered content */
+ 
   .centered-content {
     text-align: center;
   }

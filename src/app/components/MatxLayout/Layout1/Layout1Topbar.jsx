@@ -18,14 +18,19 @@ import { NotificationProvider } from 'app/contexts/NotificationContext';
 import useAuth from 'app/hooks/useAuth';
 import useSettings from 'app/hooks/useSettings';
 import { topBarHeight } from 'app/utils/constant';
+import { useDispatch } from 'react-redux';
 
 import { Span } from '../../Typography';
 import NotificationBar from '../../NotificationBar/NotificationBar';
 import ShoppingCart from '../../ShoppingCart';
 
+import { removeToken } from 'redux/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
+
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary
 }));
+
 
 const TopbarRoot = styled('div')({
   top: 0,
@@ -82,6 +87,8 @@ const IconBox = styled('div')(({ theme }) => ({
 }));
 
 const Layout1Topbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const theme = useTheme();
   const { settings, updateSettings } = useSettings();
   const { logout, user } = useAuth();
@@ -101,6 +108,12 @@ const Layout1Topbar = () => {
     }
     updateSidebarMode({ mode });
   };
+
+  const logOut = () => {
+    dispatch(removeToken());
+    navigate('/signin');
+    
+  }
 
   return (
     <TopbarRoot>
@@ -126,7 +139,7 @@ const Layout1Topbar = () => {
         </Box>
 
         <Box display="flex" alignItems="center">
-          <MatxSearchBox />
+          {/* <MatxSearchBox /> */}
 
           <NotificationProvider>
             <NotificationBar />
@@ -165,7 +178,7 @@ const Layout1Topbar = () => {
               <Span> Settings </Span>
             </StyledItem>
 
-            <StyledItem onClick={logout}>
+            <StyledItem onClick={logOut}>
               <Icon> power_settings_new </Icon>
               <Span> Logout </Span>
             </StyledItem>

@@ -1,1 +1,0 @@
-import { GetPaymentHistory } from "../ApiBackend/ApiBackend"

@@ -5,6 +5,9 @@ import { authRoles } from './auth/authRoles';
 import Loadable from './components/Loadable';
 import MatxLayout from './components/MatxLayout/MatxLayout';
 import materialRoutes from 'app/views/material-kit/MaterialRoutes';
+// import Rewards from './views/Rewards/Rewards';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+// import Requests from './views/Requests/Requests';
 
 // session pages
 const NotFound = Loadable(lazy(() => import('app/views/sessions/NotFound')));
@@ -32,6 +35,10 @@ const Coursedetail = Loadable(lazy(() => import('app/views/courses/CourseDetails
 
 const Affiliate = Loadable(lazy(() => import('app/views/Affiliate/Affiliate')));
 
+const Rewards = Loadable(lazy(() => import('app/views/Rewards/Rewards')));
+
+const Requests = Loadable(lazy(() => import('app/views/Requests/Requests')));
+
 
 const routes = [
   {
@@ -43,52 +50,74 @@ const routes = [
     children: [
       ...materialRoutes,
 
-      // dashboard route
+   
       {
-        path: '/dashboard/default',
-        element: <Analytics />,
-        auth: authRoles.admin
-      },
+        path: '/',
+        element: <PrivateRoute />,
 
-      //courses route
-      {
-        path: '/courses',
-        element: <Course />,
-        auth: authRoles.admin
-      },
+        children: [
+          {
+            path: '/dashboard',
+            element: <Analytics />,
+            auth: authRoles.admin
+          },
+          //courses route
+          {
+            path: '/courses',
+            element: <Course />,
+            auth: authRoles.subadmin
+          },
 
-      //payment history route
-      {
-        path: '/PaymentHistory',
-        element: <History />,
-        auth: authRoles.admin
-      },
+          //payment history route
+          {
+            path: '/PaymentHistory',
+            element: <History />,
+            auth: authRoles.admin
+          },
 
-      //payment history detail on a user route
-      {
-        path: '/PaymentHistory/:userId',
-        element: <Historydetail />,
-        auth: authRoles.admin
-      },
-      {
-        path: '/AffiliateLinks',
-        element: <Affiliate />,
-        auth: authRoles.admin
-      },
+          //payment history detail on a user route
+          {
+            path: '/PaymentHistory/:userId',
+            element: <Historydetail />,
+            auth: authRoles.admin
+          },
+          {
+            path: '/AffiliateLinks',
+            element: <Affiliate />,
+            auth: authRoles.admin
+          },
 
-      // course deatils route
-      {
-        path: '/courses/:courseId',
-        element: <Coursedetail />,
-        auth: authRoles.admin
-      },
+          // course deatils route
+          {
+            path: '/courses/:courseId',
+            element: <Coursedetail />,
+            auth: authRoles.admin
+          },
 
-      // e-chart rooute
-      {
-        path: '/charts/echarts',
-        element: <AppEchart />,
-        auth: authRoles.editor
-      }
+          // e-chart rooute
+          {
+            path: '/charts/echarts',
+            element: <AppEchart />,
+            auth: authRoles.editor
+
+          },
+
+          {
+            path: '/Rewards',
+            element: <Rewards />,
+            auth: authRoles.subadmin
+          },
+
+          {
+            path: '/Requests',
+            element: <Requests />,
+            auth: authRoles.admin
+          },
+        ]
+      },
+      
+     
+
     ]
   },
 
@@ -99,8 +128,8 @@ const routes = [
   { path: '/session/forgot-password', element: <ForgotPassword /> },
   { path: '/signin', element: <JwtLogin /> },
 
-  // { path: '/', element: <Navigate to="dashboard/default" /> },
-  { path: '*', element: <Navigate to="/dashboard/default" /> }
+  { path: '/', element: <Navigate to="/dashboard" /> },
+  // { path: '/', element: <Navigate to="/dashboard" /> }
 ];
 
 
