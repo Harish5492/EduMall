@@ -58,9 +58,7 @@ class RewardToSubAdminController {
                 // Add the case-insensitive search condition
                 $or: [
                     { subAdminEmail: { $regex: searchRegex } },
-                    // { requestorID: { $regex: searchRegex } },  // Replace 'fieldName1' with the actual field name you want to search
-                    // { amount: { $regex: searchRegex } },  // Replace 'fieldName2' with another field if needed
-                    // Add more fields as needed
+                  
                 ]
             })
                 .skip(skip)
@@ -73,9 +71,6 @@ class RewardToSubAdminController {
                 // Add the same case-insensitive search condition for counting total documents
                 $or: [
                     { subAdminEmail: { $regex: searchRegex } },
-                    // { requestorID: { $regex: searchRegex } },
-                    // { amount: { $regex: searchRegex } },
-                    // Add more fields as needed
                 ]
             });
 

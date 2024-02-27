@@ -129,21 +129,6 @@ class paymentHelper {
 
   }
 
-  // async getCourseData(productIds) {
-
-  //   const data = await Course.findById(productIds,'title');
-  //   return data;
-  
-  // }
-
-
-  //   async checkAmount(productIds,totalPrice){
-  //     console.log("inside checkamount",productIds,totalPrice)
-  //     const totalAmount = await Course.findOne({_id:productIds},'price')
-
-  // console.log(totalAmount)
-  //     if(totalPrice!=totalAmount.price) throw {message:"Amount Mismatch", status:false}
-  //   } 
 
   async checkAmount(productIds, totalPrice) {
     console.log("inside checkamount", productIds, 'totalPrice', totalPrice);

@@ -24,20 +24,14 @@ class affiliate {
             const stat = await affiliateRequest.findOne({ requestorID: decodedToken.id })
                 .sort({ requested_on: -1 }) // Sort in descending order based on createdAt (replace with your actual timestamp field)
                 .exec()
-            console.log(stat, "fffffff")
+         
 
             if (stat) {
                 if (stat.requestStatus === 'Pending') {
                     res.json({ message: "Affiliation Request is Pending", status: true })
                 }
                 else if (stat.requestStatus === 'Success') {
-                    // const trmp = {  user: decodedToken.id, key }
-
-                    // const Role = decodedToken.role
-
-
-                    // let token = CryptoJS.AES.encrypt(JSON.stringify(trmp),key, decodedToken.id).toString();
-
+              
                     res.json({ message: "Affiliation Request is Accepted ", status: true })
                 }
                 else {
@@ -47,15 +41,7 @@ class affiliate {
             }
 
             else res.json({ message: "Please send request First ", status: false })
-            // const uniqueLink = `http://localhost:3000/courses/${Data.id}/user/${decodedToken.id}`;
-            // await affiliateMarketing.create({ courseId: Data._id, affiliateLink: uniqueLink, affiliator: decodedToken.id, })
-            // let CryDtoken = CryptoJS.AES.decrypt(Data.id, decodedToken.id);
-            // let CryDtoken = CryptoJS.AES.decrypt(token, Data.id);
-            // let check = (CryDtoken.toString(CryptoJS.enc.Utf8));
-            // let decryptedData = JSON.parse(check)
-
-            // console.log("final is here", decryptedData)
-            // res.json({ Data, status: true, token });
+           
         } catch (error) {
             res.status(500).send(error);
         }
@@ -69,9 +55,7 @@ class affiliate {
             console.log(decodedToken,id)
 
             const check = await AffiliateMarketings.findOne({affiliator: decodedToken.id}).populate('courseDetails')
-console.log("qqqqqqqqqqqq",check)
             if(check){
-                console.log("inside iff")
                  for (let elem of check.courseDetails){
                     if(elem.courseId == id){
                         console.log("insie",elem.courseId) 
@@ -80,15 +64,11 @@ console.log("qqqqqqqqqqqq",check)
                     }
                  }
             }
-            console.log("check")
+            
             const Data = await Course.findById(id)
-            console.log("ssssssssssssssss",Data)
             const courseData = { course_id: Data.id, course_title: Data.title, course_instructor: Data.instructor, user_id: decodedToken.id }
-            // console.log("wwwwwwwwwww",courseData)
             const token = CryptoJS.AES.encrypt(JSON.stringify(courseData), key).toString();
-            // console.log("pppppppppppppp",token)
             const document = await AffiliateDetails.create({ courseId: Data._id, affiliateToken: token });
-            // console.log("ssssssssssss",document)
 
             const exists = await AffiliateMarketings.findOne({ affiliator: decodedToken.id })
 
@@ -103,13 +83,6 @@ console.log("qqqqqqqqqqqq",check)
                 await AffiliateMarketings.create({ courseDetails : [document._id ], affiliator: decodedToken.id  })
 
               }
-
-            // let CryDtoken = CryptoJS.AES.decrypt(token, key);
-            // let check = CryDtoken.toString(CryptoJS.enc.Utf8);
-            // let decryptedData = JSON.parse(check);
-            // console.log("final is here", decryptedData);
-            // const uniqueLink = `http://10.10.2.30:3000/courses/${Data.id}/user/${decodedToken.id}`;
-
             console.log("token",token)
             res.json({ message: "token sent", status: true, token })
         }
@@ -118,23 +91,7 @@ console.log("qqqqqqqqqqqq",check)
         }
     }
 
-    // async decodeToken(req,res){
-    //     try{ 
-    //         console.log("inside decodeToken")
-    //         const {affiliateToken} = req.body
-    //         let CryDtoken = CryptoJS.AES.decrypt(affiliateToken, key);
-    //         let check = CryDtoken.toString(CryptoJS.enc.Utf8);
-    //         let decryptedData = JSON.parse(check);
-    //         console.log("final is here", decryptedData);
-    //         res.json({message:"token verified",decryptedData})
 
-    //     }
-    //     catch(error){
-    //         res.status(500).send(error)
-
-    //     }
-
-    // }
 
     async affiliationRequest(req, res) {
         try {
@@ -193,7 +150,6 @@ console.log("qqqqqqqqqqqq",check)
                 // Add the same case-insensitive search condition for counting total documents
                 $or: [
                     { requestorEmail: { $regex: searchRegex } },
-                    // { requestorID: { $regex: searchRegex } },
                     { requestStatus: { $regex: searchRegex } },
                     // Add more fields as needed
                 ]
@@ -240,9 +196,6 @@ console.log("qqqqqqqqqqqq",check)
                 }
             })
 
-        //    await records.courseDetails.forEach(item => {
-        //         item.course = item.populate('courseId'); // You can replace 'Male' with the desired value
-        //     });
 console.log(records)
             res.json({ message: "Your Records : ",records, status: true })
 

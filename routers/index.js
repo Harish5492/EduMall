@@ -9,9 +9,7 @@ const rewardRouter = require('./reward.router')
 const adminRouter = require('./admin.router')
 const asbRouter = require('./asb.router')
 
-// const routerIndex = { userRouter, otpRouter, billingRouter ,referalRouter ,affiliateRouter,adminRouter }
 const routerIndex = { userRouter, otpRouter, courseRouter, billingRouter ,referalRouter ,affiliateRouter ,rewardRouter,adminRouter,asbRouter}
 
 module.exports = routerIndex
 
-// module.exports= { userRouter, otpRouter, courseRouter, billingRouter }

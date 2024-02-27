@@ -89,13 +89,6 @@ class courseController {
       console.log("update Course", req.params)       
       const obj = req.body;
       console.log("obj", obj)
-      // const obj1 = {...obj,title:"qweeeeerttttttttygvvvvvvvvvv",another:"antohr"}
-      // console.log(obj1)
-      // const obj = {}  
-      // if (title) obj.title = title
-      // if (title) obj.title = title
-      // if (content) obj.content = content 
-      // if (videoUrl) obj.videoUrl = videoUrl
       await Course.findByIdAndUpdate(req.params.id, obj, { updatedOn: Date.now() });
       res.json({ message: "updated successfully" });
     } catch (error) {

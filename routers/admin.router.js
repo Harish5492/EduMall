@@ -1,19 +1,8 @@
 const adminRouter = require('express').Router();
-// const CourseController = require('../controllers/CourseController');
-// const UserController = require('../controllers/UserController');
-// const AffiliateController = require('../controllers/AffiliateController')
-// const billingController = require('../controllers/billingcontroller')
-
 const Controller = require('../controllers/index')
 const { AffiliateController, BillingController, CourseController,ReferalController,UserController,RewardToSubAdminController} = Controller.module
-
-// console.log('Controller:', Controller);
-// console.log('Controller.module:', Controller.module);
-
-
 const authMiddleware = require('../middleware/authenticate');
 const role = require('../middleware/role')
-
 
 adminRouter.post('/login', UserController.login);
 adminRouter.get('/profile', authMiddleware, UserController.profile);
@@ -29,8 +18,6 @@ adminRouter.post('/updateCourse/:id',authMiddleware, role.isAdmin, CourseControl
 adminRouter.post('/addMultipleLesson',authMiddleware,role.isAdmin, CourseController.addMultipleLesson)
 adminRouter.delete('/deleteCourse/:id',authMiddleware,role.isAdmin, CourseController.deleteCourse)
 adminRouter.delete('/deleteLesson/:id',authMiddleware,role.isAdmin, CourseController.deleteLesson)
-// adminRouter.post('/amountToSubAdmin',authMiddleware,role.isAdmin,BillingController.amountToSubAdmin)
-
 adminRouter.get('/pendingRequests',authMiddleware,role.isAdmin,AffiliateController.pendingRequests)
 adminRouter.post('/affiliationRequestAction/:id',authMiddleware,role.isAdmin,AffiliateController.affiliationRequestAction)
 
