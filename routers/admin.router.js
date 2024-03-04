@@ -26,6 +26,6 @@ adminRouter.get('/affiliationRecords',authMiddleware,role.isSubAdmin,AffiliateCo
 adminRouter.get('/payment/getDetails',authMiddleware,role.isAdmin,BillingController.getDetails)
 
 
-adminRouter.get('/dashboard',DashboardController.dashboardData)
+adminRouter.get('/dashboard',authMiddleware,role.isAdmin,DashboardController.dashboardData)
 
 module.exports = adminRouter ; 
