@@ -74,14 +74,14 @@ class OtpHelper {
       return Token
  }
   
-  sendOTPOnMobile(otp) {
-    client.messages
-      .create({
-        body: `Your OTP is ${otp}`,
-        from: '+12058283986',
-        to: '+918872512811'
-      })
-  }
+ sendOTPOnMobile(otp) {
+  client.messages
+    .create({
+      body: `Your OTP is ${otp}`,
+      from: '+12182280015',
+      to: '+918872512811'
+    })    
+}
 
   async sendOTPOnEmail(otp) {
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)

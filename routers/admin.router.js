@@ -1,11 +1,11 @@
 const adminRouter = require('express').Router();
 const Controller = require('../controllers/index')
-const { AffiliateController, BillingController, CourseController,ReferalController,UserController,RewardToSubAdminController} = Controller.module
+const { AffiliateController, BillingController, CourseController,ReferalController,UserController,RewardToSubAdminController,DashboardController} = Controller.module
 const authMiddleware = require('../middleware/authenticate');
 const role = require('../middleware/role')
 
-adminRouter.post('/login', UserController.login);
-adminRouter.get('/profile', authMiddleware, UserController.profile);
+adminRouter.post('/login', role.isAdminEmail , UserController.login);
+adminRouter.get('/profile', authMiddleware, role.isSubAdmin ,UserController.profile);
 adminRouter.get('/getUserbyID/:id',authMiddleware, role.isAdmin, UserController.getUserbyID);
 adminRouter.post('/addCourse',authMiddleware, role.isAdmin, CourseController.addCourse)
 adminRouter.post('/addLesson',authMiddleware, role.isAdmin, CourseController.addLesson)
@@ -24,5 +24,8 @@ adminRouter.post('/affiliationRequestAction/:id',authMiddleware,role.isAdmin,Aff
 adminRouter.get('/affiliationRecords',authMiddleware,role.isSubAdmin,AffiliateController.affiliationRecords)
 
 adminRouter.get('/payment/getDetails',authMiddleware,role.isAdmin,BillingController.getDetails)
+
+
+adminRouter.get('/dashboard',DashboardController.dashboardData)
 
 module.exports = adminRouter ; 

@@ -138,12 +138,12 @@ class UserController {
   async updatePassword(req, res) {
     try {
       console.log("in update Password");
-      const { token } = req.body
+      const { verifyToken } = req.body
       if (!req.body.password) throw "you need to give token and password"
-      OTPHelper.verifydecryptOtpToken(token)
+      OTPHelper.verifydecryptOtpToken(verifyToken)
       const password = await UserHelper.encryptPassword(req.body.password);
       await UserHelper.updateData(req.body.email, password)
-      res.send({ message: "Password Updated Successfully" });
+      res.send({ message: "Password Updated Successfully" ,status:true});
     }
     catch (error) {
       res.status(500).send(error);
@@ -171,7 +171,7 @@ class UserController {
         user = await otpmodel.create({ ...req.body, otp: encOtp })
       }
       await OTPHelper.sendOTPOnMobile(otp)
-      await OTPHelper.sendOTPOnEmail(otp)
+      // await OTPHelper.sendOTPOnEmail(otp)
       let currentTime = new Date();
       currentTime.setMinutes(currentTime.getMinutes() + 1);
       const encData = { email: user.email, exp: currentTime }
@@ -234,8 +234,8 @@ class UserController {
       await otpHelper.validateOtpData(otp, email, exp)
       const currentTime = otpHelper.getCurrentTime()
       const encData = { email: email, exp: currentTime }
-      const Token = OTPHelper.verifytoken(encData)
-      res.json({ message: 'verified', Token })
+      const verifyToken = OTPHelper.verifytoken(encData)
+      res.json({ message: 'verified', verifyToken,status:true })
     }
     catch (error) {
       res.status(500).send(error);

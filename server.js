@@ -5,12 +5,13 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoDB = require('./config/database');
 const Api = require('./routers/index');
+const question = require('./MCQ/routes');
 const {attachWebSocket,sendNotificationToAll} = require('./websocket/websocket');
 
 const app = express(); 
 const server = http.createServer(app);
 
-const port = 3000;
+const port = 8000;
 
 // Connect to the database
 mongoDB();
@@ -33,6 +34,7 @@ app.use('/user', Api.affiliateRouter);
 app.use('/admin/adminArea', Api.rewardRouter);
 app.use('/ASB',Api.asbRouter)
 app.use('/admin/adminArea', Api.adminRouter); 
+app.use('/question/', question); 
 
 
 // Attach WebSocket

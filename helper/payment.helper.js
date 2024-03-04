@@ -72,7 +72,7 @@ class paymentHelper {
       merchantUserId: paymentMerchantUserId,
       merchantTransactionId: merchantTransactionId,
       amount: totalPrice * 100,
-      redirectUrl: `http://10.10.2.82:3000/user/payment/checkStatus/${merchantTransactionId}?${que}`,
+      redirectUrl: `http://10.10.2.29:3000/user/payment/checkStatus/${merchantTransactionId}?${que}`,
       // redirectUrl: `http://10.10.2.82:8000/user/payment/checkStatus/${merchantTransactionId}?${ur}`,
       redirectMode: 'REDIRECT',
       paymentInstrument: {

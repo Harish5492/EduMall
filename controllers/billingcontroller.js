@@ -105,7 +105,7 @@ class BillingController {
       console.log("affiliateToken.....", affiliateToken)
       await paymentHelper.alreadyHaveCourse(decodedToken, productIds)
       await paymentHelper.checkAmount(productIds, totalPrice)
-
+      
       // const que = `${queryString}&student=${student}`
       // ... (previous code)
       const encodedToken = encodeURIComponent(affiliateToken);
@@ -169,7 +169,7 @@ class BillingController {
         await paymentHelper.studentEnrolled(student, course)
         sendNotificationToAll(`Congratulations, successfully purchased`);
 
-        if (affiliateToken !='') {
+        if (affiliateToken.length>1) {
           const affiliateToken1 = decodeURIComponent(affiliateToken);
           console.log("decoded",affiliateToken1)
           await paymentHelper.updateReward(affiliateToken1, totalPrice)
@@ -177,7 +177,7 @@ class BillingController {
         console.log("insideUpdateCheck", affiliateToken)
         // return res.status(200).send({ success: true, message: "Payment Success" });
 
-        return res.redirect('http://10.10.2.30:3000/mycourses')
+        return res.redirect('http://10.10.2.85:3000/mycourses')
 
       } else if (response.data.success === false && response.data.code != "PAYMENT_PENDING") {
         paymentHelper.updateStatus(merchantTransactionId, "Failure")
