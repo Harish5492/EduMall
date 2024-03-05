@@ -1,0 +1,37 @@
+.lesson_page_outer{
+    // background-color: aliceblue;
+    padding: 40px 0px ;
+    .lesons_page{
+        h2{
+            font-size: 40px;
+            font-weight: 700;
+            color: deepskyblue;
+            font-family: "Montserrat";
+            // border-bottom: 3px solid #eee;
+            margin-bottom: 30px;
+        }
+        .para{
+            // font-style: oblique;
+            //  font-weight: 200; 
+            font-family: "Montserrat";
+            padding-bottom: 30px;
+            font-size: 17px;
+            line-height: 32px;
+        }
+        .pagination_btn{
+            text-align: center;
+            margin-top: 60px;
+            button{
+                padding: 2px 7px;
+                margin:0px 6px;
+                border: none;
+                background-color: #FFC107;
+                color: #fff; 
+                &.active {
+                    background-color: #007bff; 
+                    color: #fff; 
+                }
+            }
+        }
+    }
+}
