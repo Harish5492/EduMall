@@ -1,36 +1,35 @@
 const model = require('../models/usermodel');
-const mongoose = require('mongoose')
-const payment = require('../models/payment.model')
-const rewardPayment = require('../models/rewardPayment')
-const rewardRequests = require('../models/rewardRequests')
-const { Course } = require('../models/coursemodel')
-const { AffiliateMarketings, AffiliateDetails } = require('../models/affiliatemodel')
+const mongoose = require('mongoose');
+const payment = require('../models/payment.model');
+const rewardPayment = require('../models/rewardPayment');
+const rewardRequests = require('../models/rewardRequests');
+const { Course } = require('../models/coursemodel');
+const {
+  AffiliateMarketings,
+  AffiliateDetails,
+} = require('../models/affiliatemodel');
 const crypto = require('crypto');
-const CryptoJS = require("crypto-js");
+const CryptoJS = require('crypto-js');
 require('dotenv').config();
 const paymentKeyIndex = process.env.PAYMENTKEYINDEX;
-const paymentKey = process.env.PAYMENTKEY
+const paymentKey = process.env.PAYMENTKEY;
 // const paymentMerchantId = process.env.MERCHANTID
-const paymentMerchantId = 'PGTESTPAYUAT'
-const paymentMerchantUserId = process.env.MERCHANTUSERID
-const affiliationKey = process.env.AFFILIATETOKENKEY
-
-
-
+const paymentMerchantId = 'PGTESTPAYUAT';
+const paymentMerchantUserId = process.env.MERCHANTUSERID;
+const affiliationKey = process.env.AFFILIATETOKENKEY;
 
 class paymentHelper {
-
   async addCourse(student, coursesArray) {
-    console.log("inside addCourse")
+    console.log('inside addCourse');
     const result1 = await model.findOneAndUpdate(
       { _id: student },
       {
-        $push: { courseEnrolled: coursesArray }
+        $push: { courseEnrolled: coursesArray },
       },
       { new: true }
-    )
-    console.log("Course Added Successfully")
-    console.log("course :   ", result1)
+    );
+    console.log('Course Added Successfully');
+    console.log('course :   ', result1);
   }
 
   generateTransactionId() {
@@ -40,10 +39,9 @@ class paymentHelper {
   }
 
   hashing(data) {
-
     const payload = JSON.stringify(data);
     const payloadMain = Buffer.from(payload).toString('base64');
-    console.log(payloadMain)
+    console.log(payloadMain);
     // const keyIndex = paymentKeyIndex;
     const keyIndex = '1';
     // const key = paymentKey;
@@ -52,18 +50,17 @@ class paymentHelper {
     const sha256 = crypto.createHash('sha256').update(string).digest('hex');
     const checksum = sha256 + '###' + keyIndex;
     return { checksum, payloadMain };
-
   }
   checkHashing(merchantTransactionId) {
     // const keyIndex = paymentKeyIndex;
     const keyIndex = '1';
     // const key = paymentKey;
     const key = '099eb0cd-02cf-4e2a-8aca-3e6c6aff0399';
-    const string = `/pg/v1/status/${paymentMerchantId}/${merchantTransactionId}` + key;
+    const string =
+      `/pg/v1/status/${paymentMerchantId}/${merchantTransactionId}` + key;
     const sha256 = crypto.createHash('sha256').update(string).digest('hex');
     const checksum = sha256 + '###' + keyIndex;
     return { checksum };
-
   }
 
   getData(merchantTransactionId, totalPrice, que) {
@@ -72,12 +69,12 @@ class paymentHelper {
       merchantUserId: paymentMerchantUserId,
       merchantTransactionId: merchantTransactionId,
       amount: totalPrice * 100,
-      redirectUrl: `http://10.10.2.29:3000/user/payment/checkStatus/${merchantTransactionId}?${que}`,
+      redirectUrl: `http://10.10.2.29:8000/user/payment/checkStatus/${merchantTransactionId}?${que}`,
       // redirectUrl: `http://10.10.2.82:8000/user/payment/checkStatus/${merchantTransactionId}?${ur}`,
       redirectMode: 'REDIRECT',
       paymentInstrument: {
-        type: 'PAY_PAGE'
-      }
+        type: 'PAY_PAGE',
+      },
     };
     return data;
   }
@@ -87,12 +84,12 @@ class paymentHelper {
       merchantUserId: paymentMerchantUserId,
       merchantTransactionId: merchantTransactionId,
       amount: totalPrice * 100,
-      redirectUrl: `http://10.10.2.29:3000/admin/adminArea/sendAmountToSubAdmin/checkRewardStatus/${merchantTransactionId}?${que}`,
+      redirectUrl: `http://10.10.2.29:8000/admin/adminArea/sendAmountToSubAdmin/checkRewardStatus/${merchantTransactionId}?${que}`,
       // redirectUrl: `http://10.10.2.82:8000/user/payment/checkStatus/${merchantTransactionId}?${ur}`,
       redirectMode: 'REDIRECT',
       paymentInstrument: {
-        type: 'PAY_PAGE'
-      }
+        type: 'PAY_PAGE',
+      },
     };
     return data;
   }
@@ -100,15 +97,15 @@ class paymentHelper {
     const options = {
       method: 'POST',
       // url: "https://api.phonepe.com/apis/hermes/pg/v1/pay",
-      url: "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay",
+      url: 'https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay',
       headers: {
         accept: 'application/json',
         'Content-Type': 'application/json',
         'X-VERIFY': checksum,
       },
       data: {
-        request: payloadMain
-      }
+        request: payloadMain,
+      },
     };
     return options;
   }
@@ -122,16 +119,14 @@ class paymentHelper {
         accept: 'application/json',
         'Content-Type': 'application/json',
         'X-VERIFY': checksum,
-        'X-MERCHANT-ID': `${merchantId}`
-      }
+        'X-MERCHANT-ID': `${merchantId}`,
+      },
     };
-    return options
-
+    return options;
   }
 
-
   async checkAmount(productIds, totalPrice) {
-    console.log("inside checkamount", productIds, 'totalPrice', totalPrice);
+    console.log('inside checkamount', productIds, 'totalPrice', totalPrice);
 
     // Fetch courses by their IDs
     const courses = await Course.find({ _id: { $in: productIds } }, 'price');
@@ -157,101 +152,105 @@ class paymentHelper {
 
     // Use Math.abs() to handle potential floating-point precision issues
     if (totalPrice < 0.9 * totalAmount) {
-      console.warn("Amount Mismatch or Invalid Discount - Warning sent to admin");
-      throw { message: "Amount Mismatch or Invalid Discount", status: false };
+      console.warn(
+        'Amount Mismatch or Invalid Discount - Warning sent to admin'
+      );
+      throw { message: 'Amount Mismatch or Invalid Discount', status: false };
     }
-
   }
 
   async addPayment(paymentDetail) {
-    console.log("inside addPayment")
-    console.log(paymentDetail)
-    const obj = paymentDetail
-    console.log("obj", obj)
-    await payment.create(obj)
-    console.log("payment Added Successfully")
+    console.log('inside addPayment');
+    console.log(paymentDetail);
+    const obj = paymentDetail;
+    console.log('obj', obj);
+    await payment.create(obj);
+    console.log('payment Added Successfully');
   }
 
   async rewardPayment(paymentDetail) {
-    console.log("inside addPayment")
-    console.log(paymentDetail)
-    const obj = paymentDetail
-    console.log("obj", obj)
-    await rewardPayment.create(obj)
-    console.log("RewardPayment Added Successfully")
+    console.log('inside addPayment');
+    console.log(paymentDetail);
+    const obj = paymentDetail;
+    console.log('obj', obj);
+    await rewardPayment.create(obj);
+    console.log('RewardPayment Added Successfully');
   }
 
   async updateStatus(merchantTransactionId, status) {
-    console.log("inside updateStatus")
+    console.log('inside updateStatus');
     await payment.findOneAndUpdate(
       { merchantTransactionId: merchantTransactionId },
       { status: status }
-    )
-    console.log("payment Added Successfully")
+    );
+    console.log('payment Added Successfully');
   }
   async updateRewardStatus(merchantTransactionId, status) {
-    console.log("inside updateStatus")
+    console.log('inside updateStatus');
     await rewardPayment.findOneAndUpdate(
       { merchantTransactionId: merchantTransactionId },
       { status: status }
-    )
-    console.log("reward Added Successfully")
+    );
+    console.log('reward Added Successfully');
   }
 
   async updateRequestAmount(totalPrice, SubAdminId) {
-    console.log("inside updateReqestAmount")
-    console.log("details", totalPrice, SubAdminId)
+    console.log('inside updateReqestAmount');
+    console.log('details', totalPrice, SubAdminId);
 
-    const subAdmin = await rewardRequests.findOne({ subAdminID: SubAdminId }, 'amount')
-    if (!subAdmin) throw { message: "subAdmin is not found " }
-    console.log("amount", subAdmin.amount)
+    const subAdmin = await rewardRequests.findOne(
+      { subAdminID: SubAdminId },
+      'amount'
+    );
+    if (!subAdmin) throw { message: 'subAdmin is not found ' };
+    console.log('amount', subAdmin.amount);
     // subAdmin.amount = (parseFloat(subAdmin.amount) - parseFloat(totalPrice)).toString();
 
-    await rewardRequests.findOneAndUpdate(
-      SubAdminId,
-      { $set: { amount: subAdmin.amount - totalPrice } }
-    )
-
-
+    await rewardRequests.findOneAndUpdate(SubAdminId, {
+      $set: { amount: subAdmin.amount - totalPrice },
+    });
   }
   async updateRewardEarned(totalPrice, SubAdminId) {
-    console.log("inside updateReqestAmount")
-    console.log("details", totalPrice, SubAdminId)
+    console.log('inside updateReqestAmount');
+    console.log('details', totalPrice, SubAdminId);
 
-    const subAdmin = await AffiliateMarketings.findOne({ affiliator: SubAdminId }, 'totalRewards')
-    if (!subAdmin) throw { message: "subAdmin is not found " }
-    console.log("amount", subAdmin.totalRewards)
+    const subAdmin = await AffiliateMarketings.findOne(
+      { affiliator: SubAdminId },
+      'totalRewards'
+    );
+    if (!subAdmin) throw { message: 'subAdmin is not found ' };
+    console.log('amount', subAdmin.totalRewards);
     // subAdmin.amount = (parseFloat(subAdmin.amount) - parseFloat(totalPrice)).toString();
 
-    await AffiliateMarketings.findOneAndUpdate(
-      SubAdminId,
-      { $set: { totalRewards: subAdmin.totalRewards - totalPrice } }
-    )
-
-
+    const update = await AffiliateMarketings.findOneAndUpdate(
+      { affiliator: SubAdminId },
+      { $set: { totalRewards: subAdmin.totalRewards - totalPrice } },
+      { new: true }
+    );
+    console.log('update', update);
   }
 
   async deleteRequest(SubAdminId) {
-    console.log("inside DeleteRequest")
-    const subAdmin = await rewardRequests.findOne({ subAdminID: SubAdminId }, 'amount')
+    console.log('inside DeleteRequest');
+    const subAdmin = await rewardRequests.findOne(
+      { subAdminID: SubAdminId },
+      'amount'
+    );
     if (subAdmin.amount == '0') {
-      const deletedRequest = await rewardRequests.findOneAndDelete({ subAdminID: SubAdminId })
-      console.log("Request", deletedRequest)
+      const deletedRequest = await rewardRequests.findOneAndDelete({
+        subAdminID: SubAdminId,
+      });
+      console.log('Request', deletedRequest);
     }
 
-    const ChangeStatus = await model.findByIdAndUpdate(
-      SubAdminId,
-      {
-        $set: { rewardRequested: true }
-      }
-    )
-    console.log("changeStatus", ChangeStatus)
-
+    const ChangeStatus = await model.findByIdAndUpdate(SubAdminId, {
+      $set: { rewardRequested: true },
+    });
+    console.log('changeStatus', ChangeStatus);
   }
 
-
   async studentEnrolled(student, coursesArray) {
-    console.log("inside studentEnrolled", student, coursesArray);
+    console.log('inside studentEnrolled', student, coursesArray);
 
     for (const courseId of coursesArray) {
       // Check if courseId is a valid ObjectI
@@ -269,7 +268,7 @@ class paymentHelper {
         );
 
         console.log(`Student enrolled successfully in course ${courseId}`);
-        console.log("Course: ", result);
+        console.log('Course: ', result);
       } catch (error) {
         console.error(error.message);
       }
@@ -279,37 +278,42 @@ class paymentHelper {
   async alreadyHaveCourse(decodedToken, productIds) {
     // const courses = await Course.find({ studentsEnrolled: decodedToken.id }, 'studentsEnrolled');
 
-    const courses = await Course.find({ _id: { $in: productIds } }, 'studentsEnrolled');
+    const courses = await Course.find(
+      { _id: { $in: productIds } },
+      'studentsEnrolled'
+    );
     let array = [];
-    console.log("yoyohoneysingh", courses);
+    console.log('yoyohoneysingh', courses);
 
     if (courses && courses.length > 0) {
       // Iterate over each course and check if decodedToken.id is present in studentsEnrolled
       for (const course of courses) {
         if (course.studentsEnrolled.includes(decodedToken.id)) {
-          array.push(course._id)
+          array.push(course._id);
         }
       }
-      console.log("Array", array)
+      console.log('Array', array);
     }
 
-    if (array.length) throw ({ message: "You have already bought one of the course", status: false });
-
+    if (array.length)
+      throw {
+        message: 'You have already bought one of the course',
+        status: false,
+      };
   }
 
   async decodeToken(affiliateToken) {
-    console.log("inside decodeToken", affiliateToken)
+    console.log('inside decodeToken', affiliateToken);
 
     let CryDtoken = CryptoJS.AES.decrypt(affiliateToken, affiliationKey);
     let check = CryDtoken.toString(CryptoJS.enc.Utf8);
-    console.log("check", check)
+    console.log('check', check);
     let decryptedData = JSON.parse(check);
     // console.log("final is here", decryptedData);
     // let CryDtoken = CryptoJS.AES.decrypt(affiliateToken, affiliationKey);
     // console.log("inside decodeToken", CryDtoken)
 
-    return decryptedData
-
+    return decryptedData;
   }
 
   // async addRewards(affiliateToken,productIds) {
@@ -329,35 +333,40 @@ class paymentHelper {
     // console.log("\n\n\n\n\ninside updateReward",affiliateToken, totalPrice);
     const decryptedData = await this.decodeToken(affiliateToken);
 
-    console.log("asssssssssss", decryptedData);
+    console.log('asssssssssss', decryptedData);
 
     const newrewards = 0.1 * totalPrice;
     // console.log("rewardsssss",newrewards)
-    const find = await AffiliateMarketings.findOne({ affiliator: decryptedData.user_id }).populate({
+    const find = await AffiliateMarketings.findOne({
+      affiliator: decryptedData.user_id,
+    }).populate({
       path: 'courseDetails',
       populate: {
         path: 'courseId',
-        model: 'Course'
-      }
+        model: 'Course',
+      },
     });
     // console.log("FInddidfninfanfinff", find);
 
     if (find) {
       const courseDetails = find.courseDetails || [];
-      console.log("courseDetailsss", courseDetails)
+      console.log('courseDetailsss', courseDetails);
       for (let e of courseDetails) {
-        console.log(e.courseId._id, '/n\n')
+        console.log(e.courseId._id, '/n\n');
         if (e.courseId._id == decryptedData.course_id) {
-          console.log("includessss")
-          const it = await AffiliateDetails.findOne({ courseId: decryptedData.course_id });
-          console.log("iiiiitttttttttttt", it.rewards)
+          console.log('includessss');
+          const it = await AffiliateDetails.findOne({
+            courseId: decryptedData.course_id,
+          });
+          console.log('iiiiitttttttttttt', it.rewards);
           if (it) {
-            console.log("iinnnnsssssiiiiiiddddeeeeeee")
+            console.log('iinnnnsssssiiiiiiddddeeeeeee');
             await AffiliateDetails.findOneAndUpdate(
               { courseId: decryptedData.course_id },
               {
-                $set: { rewards: it.rewards + newrewards }
-              });
+                $set: { rewards: it.rewards + newrewards },
+              }
+            );
           }
         }
       }
@@ -368,13 +377,8 @@ class paymentHelper {
       );
     }
 
-    console.log("Payment Added Successfully");
+    console.log('Payment Added Successfully');
   }
-
-
-
 }
-
-
 
 module.exports = new paymentHelper();

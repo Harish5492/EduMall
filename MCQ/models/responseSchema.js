@@ -1,22 +1,32 @@
 const mongoose = require('mongoose');
 
-const responseSchema = new mongoose.Schema({
+const userResponseSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  questionId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Question',
+  responses: [{
+    questionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Question',
+      required: true
+    },
+    selectedOptionIndex: {
+      type: Number,
+      required: true
+    }
+  }],
+  score: {
+    type: Number,
     required: true
   },
-  selectedOptionIndex: {
+  percentage: {
     type: Number,
     required: true
   }
 }, { timestamps: true });
 
-const Response = mongoose.model('Response', responseSchema);
+const UserResponse = mongoose.model('UserResponse', userResponseSchema);
 
-module.exports = Response;
+module.exports = UserResponse;

@@ -177,7 +177,7 @@ class BillingController {
         console.log("insideUpdateCheck", affiliateToken)
         // return res.status(200).send({ success: true, message: "Payment Success" });
 
-        return res.redirect('http://10.10.2.85:3000/mycourses')
+        return res.redirect('http://10.10.2.30:3000/mycourses')
 
       } else if (response.data.success === false && response.data.code != "PAYMENT_PENDING") {
         paymentHelper.updateStatus(merchantTransactionId, "Failure")

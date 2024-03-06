@@ -4,7 +4,7 @@ const authMiddleware = require('../middleware/authenticate');
 const role = require('../middleware/role')
 
 const Question = require('./models/questionsSchema');
-const Response = require('./models/responseSchema');
+const UserResponse = require('./models/responseSchema');
 
 questionRouter.post('/addQuestions', async (req, res) => {
     try {
@@ -30,41 +30,49 @@ questionRouter.post('/addQuestions', async (req, res) => {
   });
   
   // Route for submitting user responses
-  questionRouter.post('/submit',authMiddleware, async (req, res) => {
+  questionRouter.post('/submit', authMiddleware, async (req, res) => {
     try {
-      console.log("inside questions submit",req.body)
+        console.log("inside questions submit", req.body);
 
-      const { decodedToken, responses } = req.body;
-  
-      // Validate user ID and responses
-      if (!decodedToken.id || !responses || !Array.isArray(responses)) {
-        return res.status(400).json({ msg: 'Invalid request body' });
-      }
-  
-      // Calculate score
-      let score = 0;
-      for (const response of responses) {
-        const question = await Question.findById(response.questionId);
-        if (!question) {
-          return res.status(400).json({ msg: 'Question not found' });
+        const { decodedToken, responses } = req.body;
+
+        // Validate user ID and responses
+        if (!decodedToken.id || !responses || !Array.isArray(responses)) {
+            return res.status(400).json({ msg: 'Invalid request body' });
         }
-        if (question.correctOptionIndex === response.selectedOptionIndex) {
-          score++; 
+
+        const userResponses = [];
+
+        // Calculate score
+        let score = 0;
+        for (const response of responses) {
+            const question = await Question.findById(response.questionId);
+            if (!question) {
+                return res.status(400).json({ msg: 'Question not found' });
+            }
+            if (question.correctOptionIndex === response.selectedOptionIndex) {
+                score++;
+            }
+            userResponses.push({
+                questionId: response.questionId,
+                selectedOptionIndex: response.selectedOptionIndex
+            });
         }
-        // Save response to the database
-        await Response.create({
-          userId: decodedToken.id,
-          questionId: response.questionId,
-          selectedOptionIndex: response.selectedOptionIndex
+
+        // Calculate percentage
+        const totalQuestions = responses.length;
+        let percentage = (score / totalQuestions) * 100;
+        percentage = percentage.toFixed(2);
+
+        // Save user responses to the database
+        await UserResponse.create({
+            userId: decodedToken.id,
+            responses: userResponses,
+            score: score,
+            percentage: percentage
         });
-      }
-  
-      // Calculate percentage
-      const totalQuestions = responses.length;
-      let percentage = (score / totalQuestions) * 100;
-      percentage = percentage.toFixed(2);
-  
-      res.json({status:true, score, totalQuestions, percentage });
+
+        res.json({ status: true, score, totalQuestions, percentage });
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');

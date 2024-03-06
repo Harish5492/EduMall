@@ -148,9 +148,9 @@ class courseController {
       const itemsPerPage = parseInt(req.query.itemsPerPage) || 12;
       const skip = (page - 1) * itemsPerPage;
       const courses = await Course.find()
-        .skip(skip)
-        .limit(itemsPerPage)
-        .exec();
+        // .skip(skip)
+        // .limit(itemsPerPage)
+        // .exec();
       const totalCourses = await Course.countDocuments();
       res.send({ status: true, courses, totalCourses, itemsPerPage })
     }

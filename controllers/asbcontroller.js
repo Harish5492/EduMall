@@ -2,7 +2,7 @@ const asbStudentEnroll = require('../models/asb.student.forms')
 const asbCourse = require('../models/asb.course')
 
 class ASB {
-    async asbCourse(req, res) {
+    async addCourse(req, res) {
         try {
             const newCourse = await asbCourse.create({ ...req.body })
             console.log("newCourse", newCourse)
@@ -52,7 +52,7 @@ class ASB {
         try {
             console.log("inside getcourse API", req.params.id)
             const course = await asbCourse.findById({ _id: req.params.id })
-            console.log(course)
+            console.log("course",course)
             res.json({ status: true, course })
         }
         catch (error) {
@@ -76,6 +76,8 @@ class ASB {
 
     async asbStudentEnroll(req, res) {
         try {
+            console.log("inside asbStudentEnroll API", req.body)
+
             const newCourse = await asbStudentEnroll.create({ ...req.body })
             console.log("newCourse", newCourse)
             res.json({ message: "Student Enrolled Successfully", status: true })
