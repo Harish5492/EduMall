@@ -1,0 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+h1{
+    font-family: 'Rubik', sans-serif;
+    text-decoration: dotted;
+    padding-left: 30px;
+}

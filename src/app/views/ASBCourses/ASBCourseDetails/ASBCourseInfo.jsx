@@ -1,13 +1,29 @@
 
+import { LoadingButton } from '@mui/lab';
 import React from 'react';
+import { useState } from 'react';
 
 export const Coursedetail = ({ courseDetails, setCourseDetail, handleSubmitChanges }) => {
+    const [loading, setLoading] = useState(false)
+
+    const handleSubmit = () => {
+        setLoading(true);
+        handleSubmitChanges();
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+
+    }
     return (
         <div className="courseDetails">
             <h1 className="card-title">{courseDetails.title}</h1>
 
             <div className="Course_img">
-                <img src={courseDetails.imageUrl} alt="Course Image" />
+                <img src={courseDetails.imageUrl} alt="Course_Image"
+                    onError={(e) => {
+                        e.target.src =
+                            "https://img.freepik.com/premium-vector/online-training-courses-landing-page-design-concept_254538-184.jpg";
+                    }} />
             </div>
 
             <form>
@@ -20,8 +36,8 @@ export const Coursedetail = ({ courseDetails, setCourseDetail, handleSubmitChang
                         />
                     </li>
                     <li className="list-group-item">
-                        <span className="titlesss">Category: </span>
-                        <textarea value={courseDetails.category ? courseDetails.category : " No category Given"} readOnly />
+                        <span className="titlesss">Level: </span>
+                        <textarea className="disabled" value={courseDetails.level ? courseDetails.level : " No category Given"} disabled />
                     </li>
                     <li className="list-group-item">
                         <span className="titlesss">Subject: </span>
@@ -47,6 +63,13 @@ export const Coursedetail = ({ courseDetails, setCourseDetail, handleSubmitChang
                         />
                     </li>
                     <li className="list-group-item">
+                        <span className="titlesss">Course Duration: </span>
+                        <textarea
+                            value={courseDetails.duration}
+                            onChange={(e) => setCourseDetail((prev) => ({ ...prev, duration: e.target.value }))}
+                        />
+                    </li>
+                    <li className="list-group-item">
                         <span className="titlesss">Instructor: </span>
                         <textarea
                             value={courseDetails.instructor}
@@ -61,11 +84,17 @@ export const Coursedetail = ({ courseDetails, setCourseDetail, handleSubmitChang
                         />
                     </li>
                 </ul>
+                <LoadingButton
+                    type="submit"
+                    color="primary"
+                    loading={loading}
+                    variant="contained"
+                    sx={{ my: 2 }} onClick={handleSubmit}>
+                    Save Details
+                </LoadingButton>
             </form>
 
-            <button type="button" className="submitt_course btn btn-primary" onClick={handleSubmitChanges}>
-                Save Details
-            </button>
+
         </div>
     );
 };

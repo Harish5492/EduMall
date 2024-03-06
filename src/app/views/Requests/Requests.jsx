@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { pendingRewardRequests, sendToSubAdmin } from '../ApiBackend/ApiBackend';
 import { useWebSocket } from 'app/contexts/WebSocketContext';
-import "../Affiliate/Affiliate.css"
+import "./Requests.css"
 
 
 const Requests = () => {
@@ -15,9 +15,7 @@ const Requests = () => {
         try {
 
             const response = await pendingRewardRequests(token);
-            console.log("in request of Requests", response);
             setRequests(response.data.allRequests);
-            console.log("this is the id", response.data.allRequests[0].subAdminID);
         }
         catch (error) {
             console.error("Error fetching requests", error);
@@ -33,7 +31,6 @@ const Requests = () => {
             if (response.status == 200) {
             }
             url = response.data;
-            console.log("this is the response from SenttoSunadmn", response);
             window.open(url, '_blank');
 
 
@@ -62,68 +59,83 @@ const Requests = () => {
         return () => {
             socket.removeEventListener('message', handleMessage);
         };
-    }, [socket,messages]);
+    }, [socket, messages]);
 
     return (
-        <div>
-            <h1>Gmail Inbox</h1>
-            <div className="table-responsive">
-                <table className="table fl-table">
-                    <thead>
-                        <tr className="bg-light">
-                            <th scope="col" width="10%%">Requested On</th>
-                            <th scope="col" width="10%">Id</th>
-                            <th scope="col" width="20%">Amount Req</th>
-                            <th scope="col" width="20%">Operation</th>
+        <div style={{ paddingTop: "30px" }}>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {request?.length >= 0 && request?.map((requestss) => (
-                            <tr key={requestss._id}>
-                                <td>
-                                    {new Date(requestss.requested_on).toLocaleString("en-IN")}
-                                </td>
+            <h1>Requests Box</h1>
+            <div className="padding" style={{ marginTop: "50px" }}>
+                <div className="row container d-flex justify-content-center" style={{ margin: "auto" }}>
 
-                                <td className="email">
-                                    {requestss.
-                                        subAdminEmail
-                                        !== undefined && requestss.
-                                            subAdminEmail
-                                        !== null ? (
+                    <div className="mb-2 d-flex justify-content-between align-items-center">
+                        <div className="position-relative">
+                            <span className="position-absolute search"><i className="fa fa-search"></i></span>
+                            <form className="d-felx" role="search" onSubmit={(e) => { e.preventDefault(); }}>
 
-                                        requestss.
-                                            subAdminEmail
+                            </form>
+                        </div>
+
+                    </div>
+                    <div className="table-responsive">
+                        <table className="table fl-table">
+                            <thead>
+                                <tr className="bg-light">
+                                    <th scope="col" width="10%%">Requested On</th>
+                                    <th scope="col" width="10%">Id</th>
+                                    <th scope="col" width="20%">Amount Req</th>
+                                    <th scope="col" width="20%">Operation</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {request?.length >= 0 && request?.map((requestss) => (
+                                    <tr key={requestss._id}>
+                                        <td>
+                                            {new Date(requestss.requested_on).toLocaleString("en-IN")}
+                                        </td>
+
+                                        <td className="email">
+                                            {requestss.
+                                                subAdminEmail
+                                                !== undefined && requestss.
+                                                    subAdminEmail
+                                                !== null ? (
+
+                                                requestss.
+                                                    subAdminEmail
 
 
-                                    ) : (
-                                        <span>No Mail Provided</span>
-                                    )}
-                                </td>
-                                <td>
+                                            ) : (
+                                                <span>No Mail Provided</span>
+                                            )}
+                                        </td>
+                                        <td>
 
-                                    {requestss.amount}
-                                </td>
-                                <td>
-                                    <button className='btn btn-success ' onClick={() => { handlePayout(requestss.amount, requestss.subAdminID) }} >Accept</button>
-                                    <button className='btn btn-danger' >Reject</button>
-                                </td>
+                                            {requestss.amount}
+                                        </td>
+                                        <td>
+                                            <button className='btn btn-success ' onClick={() => { handlePayout(requestss.amount, requestss.subAdminID) }} >Accept</button>
+                                            {/* <button className='btn btn-danger' >Reject</button> */}
+                                        </td>
 
 
-                            </tr>
-                        ))
+                                    </tr>
+                                ))
 
-                        }
-                        {request?.length === 0 && (
-                            <tr>
-                                <td colSpan="5" style={{
-                                    color: "grey",
-                                    textAlign: "center"
-                                }}>No Results Found</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+                                }
+                                {request?.length === 0 && (
+                                    <tr>
+                                        <td colSpan="5" style={{
+                                            color: "grey",
+                                            textAlign: "center"
+                                        }}>No Results Found</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     );

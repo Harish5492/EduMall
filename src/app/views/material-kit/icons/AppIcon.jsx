@@ -12,6 +12,7 @@ const Container = styled("div")(({ theme }) => ({
 
 const IconList = [
   "3d_rotation",
+  "CurrencyRupeeIcon",
   "ac_unit",
   "access_alarm",
   "access_alarms",

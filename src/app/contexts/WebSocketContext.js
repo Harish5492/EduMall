@@ -44,16 +44,14 @@ export const WebSocketProvider = ({ url, children }) => {
   const socket = useMemo(() => new WebSocket(url), [url]);
   const role = useSelector((state) => state.role);
 
-
   useEffect(() => {
     const handleOpen = () => {
-      console.log("WebSocket connected");
+      console.log("");
     };
 
     const handleMessage = (event) => {
       const message = event.data;
-      if(role === "admin")
-        console.log(`Received: ${message}`);
+      if (role === "admin") console.log(`Received: ${message}`);
       // Add your logic to handle incoming messages
     };
 

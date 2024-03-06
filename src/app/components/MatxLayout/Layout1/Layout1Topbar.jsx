@@ -18,7 +18,7 @@ import { NotificationProvider } from 'app/contexts/NotificationContext';
 import useAuth from 'app/hooks/useAuth';
 import useSettings from 'app/hooks/useSettings';
 import { topBarHeight } from 'app/utils/constant';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Span } from '../../Typography';
 import NotificationBar from '../../NotificationBar/NotificationBar';
@@ -26,6 +26,7 @@ import ShoppingCart from '../../ShoppingCart';
 
 import { removeToken } from 'redux/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { SpaRounded } from '@mui/icons-material';
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary
@@ -91,7 +92,9 @@ const Layout1Topbar = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const { settings, updateSettings } = useSettings();
-  const { logout, user } = useAuth();
+  const { user } = useAuth();
+  console.log("user auth in layotu", user)
+  // const user = useSelector((state) => state.authToken);
   const isMdScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const updateSidebarMode = (sidebarSettings) => {
@@ -112,7 +115,7 @@ const Layout1Topbar = () => {
   const logOut = () => {
     dispatch(removeToken());
     navigate('/signin');
-    
+
   }
 
   return (
@@ -123,60 +126,43 @@ const Layout1Topbar = () => {
             <Icon>menu</Icon>
           </StyledIconButton>
 
-          <IconBox>
-            <StyledIconButton>
-              <Icon>mail_outline</Icon>
-            </StyledIconButton>
 
-            <StyledIconButton>
-              <Icon>web_asset</Icon>
-            </StyledIconButton>
-
-            <StyledIconButton>
-              <Icon>star_outline</Icon>
-            </StyledIconButton>
-          </IconBox>
         </Box>
 
         <Box display="flex" alignItems="center">
-          {/* <MatxSearchBox /> */}
-
-          <NotificationProvider>
-            <NotificationBar />
-          </NotificationProvider>
-
-          <ShoppingCart />
 
           <MatxMenu
             menuButton={
               <UserMenu>
-                <Hidden xsDown>
-                  <Span>
-                    Hi <strong>{user.name}</strong>
-                  </Span>
-                </Hidden>
-                <Avatar src={user.avatar} sx={{ cursor: 'pointer' }} />
+                {user?.firstName && <>
+                  <Hidden xsDown>
+                    <Span>
+                      Hi <strong>{user.firstName} {user.lastName}</strong>
+                    </Span>
+                  </Hidden>
+                  <Avatar src={user.avatar} sx={{ cursor: 'pointer' }} />
+                </>}
               </UserMenu>
             }
           >
             <StyledItem>
-              <Link to="/">
+              <Link to="/dashboard">
                 <Icon> home </Icon>
                 <Span> Home </Span>
               </Link>
             </StyledItem>
 
-            <StyledItem>
+            {/* <StyledItem>
               <Link to="/page-layouts/user-profile">
                 <Icon> person </Icon>
                 <Span> Profile </Span>
               </Link>
-            </StyledItem>
+            </StyledItem> */}
 
-            <StyledItem>
+            {/* <StyledItem>
               <Icon> settings </Icon>
               <Span> Settings </Span>
-            </StyledItem>
+            </StyledItem> */}
 
             <StyledItem onClick={logOut}>
               <Icon> power_settings_new </Icon>

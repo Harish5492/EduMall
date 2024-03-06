@@ -1,14 +1,31 @@
 import React from 'react';
 import { useTheme } from '@mui/material';
 import ReactEcharts from 'echarts-for-react';
+import { Details } from 'app/views/ApiBackend/ApiBackend';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const DoughnutChart = ({ height, color = [] }) => {
   const theme = useTheme();
+  const token = useSelector((state) => state.authToken);
+  const [details, setDetails] = useState({});
+  const Detailsfetch = async () => {
+    const response = await Details(token);
+
+    setDetails(response.data);
+
+
+  }
+  useEffect(() => {
+
+    Detailsfetch();
+  }, [])
 
   const option = {
     legend: {
       show: true,
-      itemGap: 20,
+      itemGap: 8,
       icon: 'circle',
       bottom: 0,
       textStyle: {
@@ -49,7 +66,7 @@ const DoughnutChart = ({ height, color = [] }) => {
         type: 'pie',
         radius: ['45%', '72.55%'],
         center: ['50%', '50%'],
-        avoidLabelOverlap: false,
+        avoidLabelOverlap: true,
         hoverOffset: 5,
         stillShowZeroSum: false,
         label: {
@@ -80,14 +97,17 @@ const DoughnutChart = ({ height, color = [] }) => {
         },
         data: [
           {
-            value: 65,
-            name: 'Google'
+            value: `${details.totalUserCount}`,
+            name: 'Total Users'
           },
           {
-            value: 20,
-            name: 'Facebook'
+            value: `${details.userCount}`,
+            name: 'Active Users'
           },
-          { value: 15, name: 'Others' }
+          {
+            value: `${details.subadminCount}`,
+            name: 'Sub Admin'
+          }
         ],
         itemStyle: {
           emphasis: {

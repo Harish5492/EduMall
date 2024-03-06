@@ -1,11 +1,11 @@
 
-import "./index.css";
 import React, { useState, useEffect } from 'react';
 import { GetPaymentHistory } from "../ApiBackend/ApiBackend"
 import Loading from "app/components/MatxLoading";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./History.css";
 import { useSelector } from "react-redux";
+import AppTable from '../material-kit/tables/AppTable';
 
 
 
@@ -17,27 +17,15 @@ const History = () => {
   const [totalResult, setTotalResult] = useState(0);
   const [currentItems, setCurrentItems] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchValue, setSearchValue] = useState('');
   const [signal, setSignal] = useState(null);
   const [debounceTime, setDebounceTime] = useState(null);
   const [roleStatus, setroleStatus] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-    setSignal(signal);
-    if (debounceTime) {
-      clearTimeout(debounceTime);
-    }
-    const timeOut = setTimeout(() => {
-      fetchData();
-    }, 800);
-    setDebounceTime(timeOut);
-    return () => {
-      controller.abort();
-      clearTimeout(timeOut);
 
-    }
+    fetchData();
   }, [currentPage, searchQuery]);
 
   async function fetchData() {
@@ -73,9 +61,9 @@ const History = () => {
     if (debounceTime) {
       clearTimeout(debounceTime);
     }
-
     const timeoutId = setTimeout(() => {
       setSearchQuery(e.target.value);
+
     }, 800);
 
     setDebounceTime(timeoutId);
@@ -136,111 +124,115 @@ const History = () => {
   return (
     <>
       <div id='page-content' style={{ paddingTop: "30px" }} >
-        <div className="payment-history-header">
-          <h1 >Payment History</h1>
-          <div className="search-filter">
+        <h1 >Payment History</h1>
+        <div className="padding" style={{ marginTop: "50px" }} >
+          <div className="row container d-flex justify-content-center" style={{ margin: "auto" }}>
+            <div className="mb-2 d-flex justify-content-between align-items-center">
+              <div className="position-relative">
+                <span className="position-absolute search"><i className="fa fa-search"></i></span>
+                <form className="d-flex" role="search" onSubmit={(e) => {
+                  e.preventDefault();
 
-            <form className="d-flex" role="search" onSubmit={(e) => {
-              e.preventDefault();
-              fetchData();
-            }}>
-              <input className="form-control me-2" type="search" value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  handleSearchChange();
+                }}>
+                  <input className="form-control me-2" type="search" value={searchValue}
+                    onChange={(e) => {
 
-                }} placeholder="Search" aria-label="Search" />
-            </form>
-          </div>
-        </div>
-       
-        <div className="table-responsive" style={{
-          width: "100%",
-          padding: "2%"
-        }}>
-          <table className="table fl-table table-hover">
-            <thead>
-              <tr className="bg-light">
-                <th scope="col" width="5%">Status</th>
-                <th scope="col" width="20%">Id</th>
-                <th scope="col" width="20%">Date</th>
-                <th scope="col" width="20%">Email</th>
-                <th scope="col" width="20%">Date</th>
-                <th scope="col" width="20%">Courses</th>
+                      setSearchValue(e.target.value);
+                      handleSearchChange(e);
 
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems?.length > 0 && (
-                currentItems?.filter((payment) => {
-                  const lowercaseSearch = searchQuery.toLowerCase();
-                  return (
-                    payment.status.toLowerCase().includes(lowercaseSearch) ||
-                    payment.email.toLowerCase().includes(lowercaseSearch)) ||
-                    payment.amount.toLowerCase().includes(lowercaseSearch)
-                }).map((payment) => (
-                  <tr key={payment._id}>
-                    <td>
-                      <span className={`${payment.status === 'Success' ? 'badge text-bg-success' : 'badge text-bg-danger'} d-flex justify-content-center`}>
-                        {payment.status}
-                      </span>
-                    </td>
+                    }} placeholder="Search" aria-label="Search" />
+                </form>
+              </div>
+            </div>
 
-                    <td className="user_id">
-                      {payment.user !== undefined && payment.user !== null ? (
 
-                        <NavLink to={`/PaymentHistory/${payment.user}`}>
-                          {payment.user}
-                        </NavLink>
-                      ) : (
-                        <span>No User</span>
-                      )}
-                    </td>
-                    <td className="email">
-                      {payment.email !== undefined && payment.email !== null ? (
+            <div className="table-responsive" >
+              <table className="table fl-table table-hover">
+                <thead>
+                  <tr className="bg-light">
+                    <th scope="col" width="5%">Status</th>
+                    <th scope="col" width="20%">Id</th>
+                    <th scope="col" width="20%">Email</th>
+                    <th scope="col" width="20%">Date</th>
+                    <th scope="col" width="20%">Amount</th>
+                    <th scope="col" width="20%">Courses</th>
 
-                        payment.email
-
-                      ) : (
-                        <span>No Mail Provided</span>
-                      )}
-                    </td>
-                    <td>{new Date(payment.payed_on).toLocaleString("en-IN")}</td>
-                    <td>{payment.amount}</td>
-                    <td>{payment.courseBought.length}</td>
                   </tr>
-                ))
-              )}
-              {currentItems?.length === 0 && (
-                <tr>
-                  <td colSpan="6" style={{
-                    color: "grey",
-                    textAlign: "center"
-                  }}>No Results Found</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        {totalResult >= 8 && (
-          <nav aria-label="Page navigation example" className="nav-pagee">
-            <ul className="pagination">
-              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-                <a className="page-link" onClick={() => paginate(currentPage - 1)} aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
+                </thead>
+                <tbody>
+                  {currentItems?.length > 0 && (
+                    currentItems?.filter((payment) => {
+                      const lowercaseSearch = searchQuery.toLowerCase();
+                      return (
+                        payment.status.toLowerCase().includes(lowercaseSearch) ||
+                        payment.email.toLowerCase().includes(lowercaseSearch)) ||
+                        payment.amount.toLowerCase().includes(lowercaseSearch)
+                    }).map((payment) => (
+                      <tr key={payment._id}>
+                        <td>
+                          <span className={`${payment.status === 'Success' ? 'badge text-bg-success' : 'badge text-bg-danger'} d-flex justify-content-center`}>
+                            {payment.status}
+                          </span>
+                        </td>
 
-              {renderPageNumbers()}
-              <li className={`page-item ${currentPage === Math.ceil(totalResult / pageItems) ? 'disabled' : ''}`}>
-                <a className="page-link" onClick={() => paginate(currentPage + 1)} aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        )}
-      </div >
+                        <td className="user_id">
+                          {payment.user !== undefined && payment.user !== null ? (
+
+                            <NavLink to={`/PaymentHistory/${payment.user}`}>
+                              {payment.user}
+                            </NavLink>
+                          ) : (
+                            <span>No User</span>
+                          )}
+                        </td>
+                        <td className="email">
+                          {payment.email !== undefined && payment.email !== null ? (
+
+                            payment.email
+
+                          ) : (
+                            <span>No Mail Provided</span>
+                          )}
+                        </td>
+                        <td>{new Date(payment.payed_on).toLocaleString("en-IN")}</td>
+                        <td>{payment.amount}</td>
+                        <td>{payment.courseBought.length}</td>
+                      </tr>
+                    ))
+                  )}
+                  {currentItems?.length === 0 && (
+                    <tr>
+                      <td colSpan="6" style={{
+                        color: "grey",
+                        textAlign: "center"
+                      }}>No Results Found</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            {totalResult >= 8 && (
+              <nav aria-label="Page navigation" className="nav-pagee">
+                <ul className="pagination">
+                  <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                    <a className="page-link" onClick={() => paginate(currentPage - 1)} aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+
+                  {renderPageNumbers()}
+                  <li className={`page-item ${currentPage === Math.ceil(totalResult / pageItems) ? 'disabled' : ''}`}>
+                    <a className="page-link" onClick={() => paginate(currentPage + 1)} aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            )}
+          </div>
+        </div >
+      </div>
+      {/* <AppTable /> */}
     </>
   );
 };

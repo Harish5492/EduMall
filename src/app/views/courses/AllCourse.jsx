@@ -11,13 +11,12 @@ export const AllCourse = ({ token, course, index, handleExpand, expandState, rol
     const [affiliateLinks, setAffiliateLinks] = useState("");
     const [showGetLinkButton, setShowGetLinkButton] = useState(true);
     const [copied, setCopied] = useState(false);
- 
+
     const handleClick = async () => {
         try {
             const response = await GetAffilaiteLink(token, course._id);
             if (response.status === 200) {
-                 setnewToken(response.data.token);
-                console.log("this is new TOken ", newToken, response.data.token);
+                setnewToken(response.data.token);
                 setAffiliateLinks(`http://localhost:3000/course_detail/${course._id}?affiliateToken=${response.data.token}`);
                 setShowGetLinkButton(false);
             }
@@ -42,7 +41,7 @@ export const AllCourse = ({ token, course, index, handleExpand, expandState, rol
 
 
 
-    
+
 
     return (
         <>
@@ -75,16 +74,16 @@ export const AllCourse = ({ token, course, index, handleExpand, expandState, rol
                             Delete
                         </button>
                     </td>
-                ) : 
+                ) :
                     <>
-                        
+
                         <td>
-                        {showGetLinkButton && (
-                            <button className="btn btn-primary" onClick={handleClick}>
-                                Get Link
-                            </button>
-                        )}
-                        
+                            {showGetLinkButton && (
+                                <button className="btn btn-primary" onClick={handleClick}>
+                                    Get Link
+                                </button>
+                            )}
+
 
                             {affiliateLinks && !showGetLinkButton && (
                                 <button
@@ -96,9 +95,9 @@ export const AllCourse = ({ token, course, index, handleExpand, expandState, rol
                             )}
                         </td>
                     </>
-                
+
                 }
-                
+
             </tr>
         </>
     );

@@ -1,48 +1,89 @@
-.centered-container {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    height: 100vh; 
+
+    * {
+      margin: 0;
+      padding: 0
     }
   
- 
-  .centered-content {
-    text-align: center;
-  }
+    strong{
+      color: black;
+    }
   
-.loader{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
+    .useCard {
+      width: 350px;
+      background-color: #efefef;
+      border: none;
+      cursor: pointer;
+      transition: all 0.5s;
+    }
   
-.courses-table {
-    border-collapse: collapse;
-    width: 100%;
-  }
+    .image img {
+      transition: all 0.5s
+    }
   
-  .courses-table th, .courses-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  .operations-cell {
-    display: flex;
-    gap: 10px;
-  }
+    .useCard:hover .image img {
+      transform: scale(1.5)
+    }
   
-  .edit-btn {
-    color: #1976D2;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
+    .rounded-btn {
+      height: 140px;
+      width: 140px;
+   border-radius: 50%;
+    }
   
-  .delete-btn {
-    color: red;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
+    .name {
+      font-size: 22px;
+      font-weight: bold
+    }
   
+    .idd {
+      font-size: 14px;
+      font-weight: 600
+    }
+  
+    .idd1 {
+      font-size: 12px
+    }
+  
+    .number {
+      font-size: 22px;
+      font-weight: bold
+    }
+  
+    .follow {
+      font-size: 12px;
+      font-weight: 500;
+      color: #444444
+    }
+  
+    .btn1 {
+      height: 40px;
+      width: 150px;
+      border: none;
+      background-color: #000;
+      color: #aeaeae;
+      font-size: 15px
+    }
+  
+    .txt span {
+      font-size: 16px;
+      color: #545454;
+      font-weight: 500
+    }
+  
+    .icons i {
+      font-size: 19px
+    }
+  
+    hr .new1 {
+      border: 1px solid
+    }
+  
+    .join {
+      font-size: 14px;
+      color: #a0a0a0;
+      font-weight: bold
+    }
+  
+    .date {
+      background-color: #ccc
+    }

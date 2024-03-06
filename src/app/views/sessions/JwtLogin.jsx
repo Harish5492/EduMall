@@ -9,9 +9,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { LoginApi } from "../ApiBackend/ApiBackend";
 import { useDispatch } from 'react-redux';
-import { removeToken, setAuthToken, setRole } from '../../../redux/slices/authSlice';
-import { Toast } from 'bootstrap';
-import { toast } from 'react-toastify';
+import { setAuthToken, setRole } from '../../../redux/slices/authSlice';
+
 
 const FlexBox = styled(Box)(() => ({ display: 'flex', alignItems: 'center' }));
 
@@ -60,18 +59,16 @@ const JwtLogin = () => {
   const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = async (values, { setErrors, setSubmitting, resetForm }) => {
-    console.log("valuesssss", values);
     setLoading(true);
     try {
-      setSubmitting(false);
       const response = await LoginApi(values);
-      console.log(response, "responseresponse");
       if (response.status === true) {
 
+        setSubmitting(false);
         localStorage.setItem("isLogin", true);
-        navigate('/dashboard');
         dispatch(setRole(response.role))
         dispatch(setAuthToken(response.token));
+        navigate('/dashboard');
 
       }
       else {
@@ -167,15 +164,6 @@ const JwtLogin = () => {
                       Login
                     </LoadingButton>
 
-                    <Paragraph>
-                      Don't have an account?
-                      <NavLink
-                        to="/session/signup"
-                        style={{ color: theme.palette.primary.main, marginLeft: 5 }}
-                      >
-                        Register
-                      </NavLink>
-                    </Paragraph>
                   </form>
                 )}
               </Formik>

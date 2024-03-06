@@ -3,7 +3,6 @@ import { Base_url } from "./BaseUrl";
 
 export const LoginApi = async (values) => {
   try {
-    console.log("OKOKOK", values);
     const response = await axios.post(
       `${Base_url}/admin/adminArea/login`,
       values,
@@ -21,17 +20,73 @@ export const LoginApi = async (values) => {
   }
 };
 
+export const SignupApi = async (values) => {
+  try {
+    const response = await axios.post(
+      `${Base_url}/admin/adminarea/signup`,
+      values,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("API response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error in SignupApi:", error);
+    if (error.response) {
+      const { data } = error.response;
+
+      if (data.errors && data.errors.length > 0) {
+        const firstError = data.errors[0];
+        console.error("Server response error:", firstError);
+        return { message: firstError.msg, status: false };
+      } else {
+        console.error("Server response:", data);
+        return { message: data.message || "Server error", status: false };
+      }
+    } else if (error.request) {
+      console.error("No response received from the server");
+      return { message: "No response from the server", status: false };
+    } else {
+      console.error("Error in request setup:", error.message);
+      return { message: "Request setup error", status: false };
+    }
+  }
+};
+
 export const Profile = async (token) => {
   try {
     const response = await axios.get(`${Base_url}/user/profile`, {
       headers: {
         "Content-Type": "application/json",
-        "token":token
+        "x-api-authorization": token,
       },
     });
     return response;
   } catch (error) {
     console.error("This is Error in Profile", error);
+  }
+};
+
+export const Details = async (token) => {
+  try {
+    const response = await axios.get(
+      `${Base_url}/admin/adminArea/dashboard`,
+
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-authorization": token,
+        },
+      }
+    );
+    console.log("In Details API", response);
+    return response;
+  } catch (error) {
+    console.log("EEE", error);
+    return error;
   }
 };
 
@@ -47,7 +102,20 @@ export const AllCourses = async (token, values) => {
         },
       }
     );
-    console.log("API response:", response);
+    return response.data;
+  } catch (error) {
+    console.log("EEE", error);
+    return error;
+  }
+};
+export const ASBCourse = async (token, values) => {
+  try {
+    const response = await axios.get(`${Base_url}/ASB/getAllCourses`, values, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-authorization": token,
+      },
+    });
     return response.data;
   } catch (error) {
     console.log("EEE", error);
@@ -66,7 +134,6 @@ export const GetAllDetails = async (token, values) => {
         },
       }
     );
-    console.log("API response:", response);
     return response.data;
   } catch (error) {
     console.log("EEE", error);
@@ -108,7 +175,45 @@ export const AddCource = async (token, values) => {
       }),
     });
     const data = await resp.json();
-    console.log("AddCourse is added successfully:", data);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+export const AddASBCource = async (token, values) => {
+  const {
+    title,
+    description,
+    instructor,
+    imageUrl,
+    duration,
+    language,
+    level,
+    price,
+    requirements,
+    subject,
+  } = values;
+  try {
+    const resp = await fetch(`${Base_url}/ASB/addCourse`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-authorization": token,
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        instructor,
+        imageUrl,
+        duration,
+        language,
+        level,
+        price,
+        requirements,
+        subject,
+      }),
+    });
+    const data = await resp.json();
     return data;
   } catch (error) {
     return error;
@@ -116,7 +221,6 @@ export const AddCource = async (token, values) => {
 };
 
 export const DeleteCourse = async (token, _id) => {
-  console.log("iam inn");
   try {
     const response = await axios.delete(
       `${Base_url}/admin/adminArea/deleteCourse/${_id}`,
@@ -127,7 +231,20 @@ export const DeleteCourse = async (token, _id) => {
         },
       }
     );
-    console.log("API response:", response);
+    return response.data;
+  } catch (error) {
+    console.log("EEE", error);
+    return error;
+  }
+};
+export const DeleteASBCourse = async (token, _id) => {
+  try {
+    const response = await axios.delete(`${Base_url}/ASB/deleteCourse/${_id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-authorization": token,
+      },
+    });
     return response.data;
   } catch (error) {
     console.log("EEE", error);
@@ -135,7 +252,6 @@ export const DeleteCourse = async (token, _id) => {
   }
 };
 export const DeleteLesson = async (token, _id) => {
-  console.log("iam inn deleyeimbg lessons");
   try {
     const response = await axios.delete(
       `${Base_url}/admin/adminArea/deleteLesson/${_id}`,
@@ -155,7 +271,6 @@ export const DeleteLesson = async (token, _id) => {
 };
 
 export const getCourse = async (token, _id) => {
-  console.log("iam inn");
   try {
     const response = await axios.get(
       `${Base_url}/admin/adminArea/getCourse/${_id}`,
@@ -175,8 +290,6 @@ export const getCourse = async (token, _id) => {
 };
 
 export const EditCource = async (token, { _id, values }) => {
-  console.log(values, "reqqqqqqq");
-  console.log("iam inn");
   try {
     const response = await axios.post(
       `${Base_url}/admin/adminArea/updateCourse/${_id}`,
@@ -195,11 +308,27 @@ export const EditCource = async (token, { _id, values }) => {
     return error;
   }
 };
+export const EditASBCourse = async (token, { _id, values }) => {
+  try {
+    const response = await axios.post(
+      `${Base_url}/ASB/updateCourse/${_id}`,
+      values,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-authorization": token,
+        },
+      }
+    );
+    console.log("API response:", response);
+    return response.data;
+  } catch (error) {
+    console.log("EEE", error);
+    return error;
+  }
+};
 export const EditLesson = async (token, { _id, values }) => {
-  console.log(values, "reqqqqqqq");
-  console.log("iam inn Lessons");
   const { title, content, videoUrl } = values;
-  // console.log("Tokem  ",token)
   try {
     const response = await axios.post(
       `${Base_url}/admin/adminArea/updateLesson/${_id}`,
@@ -283,6 +412,25 @@ export const GetCoursesById = async (token, courseId) => {
     return error;
   }
 };
+export const ASBCoursesById = async (token, courseId) => {
+  try {
+    const response = await axios.get(
+      `${Base_url}/ASB/getCourseById/${courseId}`,
+
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-authorization": token,
+        },
+      }
+    );
+    console.log("API response:", response);
+    return response;
+  } catch (error) {
+    console.log("EEE", error);
+    return error;
+  }
+};
 export const GetLessonsById = async (token, courseId) => {
   try {
     const response = await axios.get(
@@ -302,64 +450,6 @@ export const GetLessonsById = async (token, courseId) => {
     return error;
   }
 };
-// export const AddLesson = async (token,courseId,values) => {
-
-//   const obj = [
-//     {
-//       title,
-//       content,
-//       videoUrl,
-//     },
-//   ];
-
-//   console.log("values", obj);
-//   try {
-//     const resp = await fetch(`${Base_url}/admin/adminArea/addMultipleLesson`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         "x-api-authorization": token,
-//       },
-//       body: JSON.stringify({
-
-//         obj,
-//         course: "657ff9b6d80be2372caff21d",
-//       }),
-//     });
-//     const data = await resp.json();
-//     console.log("AddCourse is added successfully:", data);
-//     return data;
-//   } catch (error) {
-//     return error;
-//   }
-// };
-
-// export const AddLesson = async (token, values) => {
-//   const { lessons, course } = values;
-//   console.log("values", values);
-//   console.log("iddd", course);
-
-//   try {
-//     const resp = await axios.post( `${Base_url}/admin/adminArea/addMultipleLesson`,
-//       JSON.stringify({
-//         lessons,
-//         course,
-//       }),
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//           "x-api-authorization": token,
-//         },
-//       }
-//     );
-
-//     const data = await resp;
-//     console.log("AddLesson is added successfully:", data);
-//     return data;
-//   } catch (error) {
-//     return error;
-//   }
-// };
 
 export const AddLesson = async (token, values) => {
   try {
@@ -373,7 +463,6 @@ export const AddLesson = async (token, values) => {
         },
       }
     );
-    console.log(resp, "tharts my response");
     return resp;
   } catch (error) {
     return error;
@@ -387,7 +476,6 @@ export const GetReferralLink = async (
   searchQuery = ""
 ) => {
   try {
-    // console.log("Token ", localStorage.getItem("token"))
     const response = await axios.get(
       `${Base_url}/admin/adminArea/pendingRequests/?page=${page}&itemsPerPage=${item}&search=${searchQuery}`,
 
@@ -425,8 +513,6 @@ export const GetAffilaiteLink = async (token, courseId) => {
 };
 
 export const handleRequest = async (requestId, status, token, remarks) => {
-  // const status = status;
-  console.log("ssss", status);
   try {
     const response = await axios.post(
       `${Base_url}/admin/adminArea/affiliationRequestAction/${requestId}`,
@@ -470,29 +556,25 @@ export const GetAffiliationRewards = async (token) => {
 
 export const SubAdminRequests = async (token, amount) => {
   try {
-    console.log("Trstngs")
     const response = await axios.post(
       `${Base_url}/admin/adminArea/subAdminRequests`,
-      {amount},
+      { amount },
       {
         headers: {
           "Content-Type": "application/json",
           "x-api-authorization": token,
         },
-       
       }
     );
-    console.log("SubADminRequetes API", response);
-    console.log("token checking", token);
+    console.log("Sub Admin Requetes API", response);
 
     return response;
   } catch (error) {
-    console.error("Error in SUbAdminRequests", error);
+    console.error("Error in Sub Admin Requetes ", error);
   }
 };
 export const pendingRewardRequests = async (token) => {
   try {
-    console.log("this is in pendingRewardsRequests")
     const response = await axios.get(
       `${Base_url}/admin/adminArea/pendingRewardRequests`,
 
@@ -501,7 +583,6 @@ export const pendingRewardRequests = async (token) => {
           "Content-Type": "application/json",
           "x-api-authorization": token,
         },
-       
       }
     );
     console.log("Pending Rewards API", response);
@@ -512,23 +593,36 @@ export const pendingRewardRequests = async (token) => {
   }
 };
 
-export const sendToSubAdmin = async (token,totalPrice,_id) => {
+export const sendToSubAdmin = async (token, totalPrice, _id) => {
   try {
     const response = await axios.post(
       `${Base_url}/admin/adminArea/sendAmountToSubAdmin`,
-      { totalPrice,_id },
+      { totalPrice, _id },
       {
         headers: {
           "Content-Type": "application/json",
           "x-api-authorization": token,
         },
-
       }
     );
     return response;
-    // console.log("Response from sendToSUbadmin", response);
-  }
-  catch(error){
+  } catch (error) {
     console.log("Error in sendToSubAdmin", error);
   }
-}
+};
+
+export const Questions = async (token, values) => {
+  console.log("i am i questio napi", values);
+  try {
+    const resp = await axios.post(`${Base_url}/question/addQuestions`, values, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-authorization": token,
+      },
+    });
+    console.log("i am i questio response", resp);
+    return resp;
+  } catch (error) {
+    return error;
+  }
+};

@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { GetCoursesById } from "../ApiBackend/ApiBackend";
+import { GetCoursesById } from "../../ApiBackend/ApiBackend";
 import "./CourseDetail.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
-import { FetchLessons, CourseEdit, LessonEdit } from "../ApiBackend/Apicalls";
+import { FetchLessons } from "../../ApiBackend/Apicalls";
 import { Coursedetail } from "./CourseInfo.jsx";
-import { LessonDetails } from "./LessonsInfo";
-import * as courseFunctions from "./courseFunctions";
-import { AddLessonForm } from "./AddLessonForm";
-// import add_form from "../../../../public/assets/images/add_form.svg";
+import { LessonDetails } from "../Lessons/LessonsInfo";
+import * as courseFunctions from "../courseFunctions";
+import { AddLessonForm } from "../Lessons/AddLessonForm";
 
 const CourseDetail = () => {
     const { courseId } = useParams();
@@ -21,23 +20,14 @@ const CourseDetail = () => {
     const [isFetchingLessons, setFetchingLessons] = useState(false);
     const [activeTab, setActiveTab] = useState("courseDetails");
     const [lessonForms, setLessonForms] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const fetchCourseDetails = async () => {
-        try {
-            const response = await GetCoursesById(token, courseId);
-            if (response.status === 200) {
-                setCourseDetail(response.data.course);
-            }
-        } catch (error) {
-            console.error("Error fetching data", error);
-        }
-    };
+
 
     const handleFetchLessons = async () => {
         try {
             setFetchingLessons(true);
             const response = await FetchLessons(token, courseId);
-            console.log("this is lesson resp", response)
             setLessons(response.data.lesson);
         } catch (error) {
             console.error("Error fetching lessons", error);
@@ -56,20 +46,8 @@ const CourseDetail = () => {
             },
         ]);
     };
-
-    //TODO: Add a function to handle deleting a lessonform
-
-    // const handleAddLessonClick = () => {
-    //     setLessonForms((prevForms) => [
-    //         ...prevForms,
-    //         {
-    //             title: '',
-    //             videoUrl: '',
-    //             content: '',
-    //         },
-    //     ]);
-    // };
     const handleSubmitChanges = async () => {
+        setLoading(true);
         const updatedValues = {
             title: courseDetails.title,
             subject: courseDetails.subject,
@@ -79,15 +57,23 @@ const CourseDetail = () => {
             price: courseDetails.price,
         };
 
-        courseFunctions.submitCourseChanges(token, courseId, updatedValues, toast);
+        await courseFunctions.submitCourseChanges(token, courseId, updatedValues, toast);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+
     };
 
     const handleSubmitLessonChanges = async (lessonId) => {
-        courseFunctions.submitLessonChanges(token, lessonId, lessons, toast);
+
+        await courseFunctions.submitLessonChanges(token, lessonId, lessons, toast);
+
     };
 
     const handleAddNewLesson = async (index) => {
-        courseFunctions.addNewLesson(token, index, lessonForms, courseId, setLessonForms, handleFetchLessons, toast);
+
+        await courseFunctions.addNewLesson(token, index, lessonForms, courseId, setLessonForms, handleFetchLessons, toast);
+
     };
 
 
@@ -100,6 +86,16 @@ const CourseDetail = () => {
 
     useEffect(() => {
 
+        const fetchCourseDetails = async () => {
+            try {
+                const response = await GetCoursesById(token, courseId);
+                if (response.status === 200) {
+                    setCourseDetail(response.data.course);
+                }
+            } catch (error) {
+                console.error("Error fetching data", error);
+            }
+        };
         fetchCourseDetails();
     }, [courseId]);
 
@@ -112,6 +108,7 @@ const CourseDetail = () => {
 
     const handleDeleteLesson = async (lessonId) => {
         try {
+
             toast.info(
                 <div>
                     <p>Are you sure you want to delete this lesson?</p>
@@ -120,6 +117,8 @@ const CourseDetail = () => {
                 </div>,
                 { autoClose: false }
             );
+
+
         } catch (error) {
             console.error('Error initiating delete:', error);
         }
@@ -187,6 +186,7 @@ const CourseDetail = () => {
                                             onChange={(field, value) => handleLessonChange(lesson._id, field, value)}
                                             onSave={() => handleSubmitLessonChanges(lesson._id)}
                                             onDelete={() => handleDeleteLesson(lesson._id)}
+                                            index={i + 1}
                                         />
                                     ))
                                 ) : null}
@@ -202,7 +202,7 @@ const CourseDetail = () => {
                                 {
                                     role === "admin" && lessons ? (
 
-                                        <img src="/assets/images/add_form.svg" onClick={handleAddLessonClick} />
+                                        <img className="add_form" src="/assets/images/add_form.svg" onClick={handleAddLessonClick} />
                                     ) :
                                         null
 

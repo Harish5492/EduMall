@@ -84,8 +84,6 @@ const MatxVerticalNav = ({ items }) => {
     return item.role.includes(RoleData[roles]);
 })
   const renderLevels = (data) => {
-    console.log("this is in dataa", data);
-    console.log("this is in itmssss", items);
     
     return data.map((item, index) => {
         return (

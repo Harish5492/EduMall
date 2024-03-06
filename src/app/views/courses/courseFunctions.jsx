@@ -1,5 +1,5 @@
 import { CourseEdit, LessonEdit } from "../ApiBackend/Apicalls";
-import { DeleteLesson,AddLesson } from "../ApiBackend/ApiBackend";
+import { DeleteLesson, AddLesson } from "../ApiBackend/ApiBackend";
 
 
 export const submitCourseChanges = async (token, courseId, updatedValues, toast) => {
@@ -48,7 +48,6 @@ export const addNewLesson = async (token, index, lessonForms, courseId, setLesso
 
     try {
         const res = await AddLesson(token, { lessons: [formData], course: courseId });
-        console.log(res, "this is res");
         if (res.status === 200) {
             toast.success("Lesson Added Successfully", {
                 position: "top-center",

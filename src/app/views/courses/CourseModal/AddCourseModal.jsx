@@ -3,20 +3,19 @@ import { Modal, Button, Form, FormGroup, FormLabel, FormControl } from 'react-bo
 import { IoCloseSharp } from "react-icons/io5";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { AddCource } from "../ApiBackend/ApiBackend";
+import { AddCource } from "../../ApiBackend/ApiBackend";
 import "./AddCourseModal.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useRef } from 'react';
+import { LoadingButton } from '@mui/lab';
+import { useState } from 'react';
 
 
 const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
   const token = useSelector((state) => state.authToken);
-  // const [courseAdded, setCourseAdded] = useState(false);
-  // const isMountedRef = useRef(true);
-
+  const [loading, setLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -44,9 +43,8 @@ const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
     }),
     onSubmit: async (values) => {
       const res = await AddCource(token, values);
-      console.log(res, "AddCource");
       if (res.message === 'added') {
-        console.log("cource addelllllllllld successfully");
+
         toast.success("Cource Added Successfully", {
           position: "top-center",
           autoClose: 2000,
@@ -55,12 +53,14 @@ const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
         handleSubmit()
 
       }
+      else {
+        setLoading(true);
+      }
 
     },
   });
 
   const handleSubmit = () => {
-
     onAddCourse()
     onClose()
   }
@@ -242,9 +242,13 @@ const AddCourseModal = ({ isOpen, onClose, onAddCourse }) => {
             </FormGroup>
 
             <Modal.Footer>
-              <Button className='submitt_course' type="submit">
+              <LoadingButton type="submit"
+                color="primary"
+                loading={loading}
+                variant="contained"
+                sx={{ my: 2 }} className='submitt_course'>
                 Submit
-              </Button>
+              </LoadingButton>
             </Modal.Footer>
           </Form>
         </Modal.Body>

@@ -38,6 +38,7 @@
   padding: 10px 20px;
   cursor: pointer;
   color:whitesmoke;
+  border-radius: 10px;
   background-color: #1976D2;
 }
 .modal-dialog.modal-dialog-centered{
@@ -62,3 +63,4 @@
 a{
   text-decoration: none;
 }
+

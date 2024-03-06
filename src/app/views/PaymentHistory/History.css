@@ -39,7 +39,7 @@ span.badge.text-bg-success {
 }
 
 .nav-pagee{
-    position: fixed;
+    position: relative;
     justify-content: center;
     margin-left:40%;
     margin-right:40%
@@ -50,7 +50,7 @@ span.badge.text-bg-success {
     padding-left: 10px;
     font-size: 23px;
     font-weight: 20px;
-    border: solid 1px;
+    border: solid 1px #e0e0e8 ;
     /* border-collapse: ; */
     width: 100%;
     /* max-width: 100%; */
@@ -75,11 +75,7 @@ span.badge.text-bg-success {
     font-size: 15px;
 }
 
-.fl-table td:nth-last-child(1) {
-    border-right: 1px solid;
-    /* width: 18%; */
 
-}
 
 .fl-table thead th {
     color: #ffffff;
@@ -95,4 +91,52 @@ span.badge.text-bg-success {
 
 .fl-table tr:nth-child(even) {
     background: #F8F8F8;
+}.centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+.centered-content {
+    text-align: center;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.courses-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.courses-table th,
+.courses-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.operations-cell {
+    display: flex;
+    gap: 10px;
+}
+
+.edit-btn {
+    color: #1976D2;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    color: red;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
 }

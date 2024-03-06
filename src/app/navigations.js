@@ -12,19 +12,25 @@ export const navigations = [
   {
     name: "Courses",
     path: "/courses",
-    icon: "dashboard",
-    role: [roleValues.Admin,roleValues.SubAdmin],
+    icon: "library_books",
+    role: [roleValues.Admin, roleValues.SubAdmin],
+  },
+  {
+    name: "ASBCourses",
+    path: "/offlinecourses",
+    icon: "library_books",
+    role: [roleValues.Admin],
   },
   {
     name: "Payment History",
     path: "/PaymentHistory",
-    icon: "history",
+    icon: "payment",
     role: [roleValues.Admin],
   },
   {
     name: "Affiliate Links",
     path: "/AffiliateLinks",
-    icon: "history",
+    icon: "link",
     role: [roleValues.Admin],
   },
   {
@@ -36,11 +42,17 @@ export const navigations = [
   {
     name: "Requests",
     path: "/Requests",
-    icon: "history",
+    icon: "queue",
+    role: [roleValues.Admin],
+  },
+  {
+    name: "Questions",
+    path: "/questions",
+    icon: "forum",
     role: [roleValues.Admin],
   },
 ];
-  // { label: "PAGES", type: "label" },
+// { label: "PAGES", type: "label" },
 //   {
 //     name: "Session/Auth",
 //     icon: "security",

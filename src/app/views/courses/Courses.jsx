@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./index.css";
 import { AllCourses, DeleteCourse } from "../ApiBackend/ApiBackend";
-import AddCourseModal from "./AddCourseModal";
+import AddCourseModal from "./CourseModal/AddCourseModal";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Loading from 'app/components/MatxLoading';
@@ -54,6 +54,15 @@ const MyCourses = () => {
       toast.dismiss();
       await DeleteCourse(token, _id);
       setCourses((prevCourses) => prevCourses.filter((course) => course._id !== _id));
+      toast.success('Course deleted successfully', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      })
 
     } catch (error) {
       console.error('Error deleting course:', error);
@@ -67,7 +76,6 @@ const MyCourses = () => {
   const fetchData = async () => {
     try {
       const response = await AllCourses(token);
-      console.log("this is response", response);
       if (Array.isArray(response?.courses)) {
         setCourses(response.courses);
 
@@ -100,9 +108,9 @@ const MyCourses = () => {
 
   return (
     <>
-   
+
       <div className='courses_top'>
-        <h2>My Courses</h2>
+        <h1>Courses</h1>
         <div className="search-filter">
           <form className="d-flex" role="search" onSubmit={(e) => {
             e.preventDefault();
@@ -116,8 +124,8 @@ const MyCourses = () => {
         )
           : (
             null
-      )}
-       
+          )}
+
       </div>
 
       <table className="courses-table">
@@ -150,8 +158,8 @@ const MyCourses = () => {
       </table>
       <AddCourseModal isOpen={showModal} onClose={handleCloseModal} onAddCourse={fetchData} />
       <ToastContainer />
-<>
-      
+      <>
+
       </>
     </>
   );

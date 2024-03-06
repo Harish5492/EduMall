@@ -8,21 +8,23 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store';
 import 'perfect-scrollbar/css/perfect-scrollbar.css';
 import { WebSocketProvider } from 'app/contexts/WebSocketContext';
+import "./index.css";
+// import { ToastContainer } from 'react-toastify';
 
 const root = createRoot(document.getElementById('root'));
-const websocketUrl = "ws://10.10.2.82:3000";
+const websocketUrl = "ws://10.10.2.29:3000";
 
 root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <StyledEngineProvider injectFirst>
         <WebSocketProvider url={websocketUrl}>
-        <BrowserRouter >
-          
-          <App />
+          <BrowserRouter >
 
+            <App />
+            {/* <ToastContainer /> */}
           </BrowserRouter>
-          </WebSocketProvider>
+        </WebSocketProvider>
       </StyledEngineProvider>
     </PersistGate>
   </Provider>

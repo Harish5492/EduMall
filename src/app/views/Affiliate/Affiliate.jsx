@@ -42,7 +42,7 @@ const Affiliate = () => {
 
         }
 
-    }, [currentPage, searchQuery, res,pageItems]);
+    }, [currentPage, searchQuery, res, pageItems]);
 
     const fetchPending = async () => {
         try {
@@ -177,12 +177,12 @@ const Affiliate = () => {
     };
     return (
         <>
- 
-            <div className="" id="page-content">
-                <h1> Pending Requests</h1>
-                <div className="padding" style={{marginTop: "50px"}}>
 
-                    <div className="row container d-flex justify-content-center">
+            <div id="page-content" style={{ paddingTop: "30px" }}>
+                <h1> Pending Requests</h1>
+                <div className="padding" style={{ marginTop: "50px" }}>
+
+                    <div className="row container d-flex justify-content-center" style={{ margin: "auto" }}>
                         <div className="mb-2 d-flex justify-content-between align-items-center">
                             <div className="position-relative">
                                 <span className="position-absolute search"><i className="fa fa-search"></i></span>
@@ -263,7 +263,7 @@ const Affiliate = () => {
                                                             </>
                                                         ) :
                                                             <label className="badge text-bg-primary">Done</label>
-                                                       
+
                                                         }
                                                     </div>
                                                 </td>

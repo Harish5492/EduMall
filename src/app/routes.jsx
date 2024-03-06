@@ -12,7 +12,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 // session pages
 const NotFound = Loadable(lazy(() => import('app/views/sessions/NotFound')));
 const JwtLogin = Loadable(lazy(() => import('app/views/sessions/JwtLogin')));
-const JwtRegister = Loadable(lazy(() => import('app/views/sessions/JwtRegister')));
+// const JwtRegister = Loadable(lazy(() => import('app/views/sessions/JwtRegister')));
 const ForgotPassword = Loadable(lazy(() => import('app/views/sessions/ForgotPassword')));
 
 // echart page
@@ -22,22 +22,31 @@ const AppEchart = Loadable(lazy(() => import('app/views/charts/echarts/AppEchart
 const Analytics = Loadable(lazy(() => import('app/views/dashboard/Analytics')));
 
 // course page
-const Course = Loadable(lazy(() => import('app/views/courses/MyCources')));
+const Course = Loadable(lazy(() => import('app/views/courses/Courses')));
+
+
+const ASBCourse = Loadable(lazy(() => import('app/views/ASBCourses/OfflineCourses/AsbCourses')));
 
 // payment history
 const History = Loadable(lazy(() => import('app/views/PaymentHistory/History')));
 
 // payment history detail on a user
 const Historydetail = Loadable(lazy(() => import('app/views/PaymentHistory/Historydetail')));
-// const HistorydetailUser = Loadable(lazy(() => import('app/views/PaymentHistory/Historydetail/:userId')));
 
-const Coursedetail = Loadable(lazy(() => import('app/views/courses/CourseDetails')));
+const Coursedetail = Loadable(lazy(() => import('app/views/courses/Course/CourseDetails')));
+
+
+const ASBCoursedetail = Loadable(lazy(() => import('app/views/ASBCourses/ASBCourseDetails/ASBCourseDetails')));
+
+
 
 const Affiliate = Loadable(lazy(() => import('app/views/Affiliate/Affiliate')));
 
 const Rewards = Loadable(lazy(() => import('app/views/Rewards/Rewards')));
 
 const Requests = Loadable(lazy(() => import('app/views/Requests/Requests')));
+
+const McqForm = Loadable(lazy(() => import('app/views/QuestionForm/QuestionForm')));
 
 
 const routes = [
@@ -50,7 +59,7 @@ const routes = [
     children: [
       ...materialRoutes,
 
-   
+
       {
         path: '/',
         element: <PrivateRoute />,
@@ -65,6 +74,11 @@ const routes = [
           {
             path: '/courses',
             element: <Course />,
+            auth: authRoles.subadmin
+          },
+          {
+            path: '/offlinecourses',
+            element: <ASBCourse />,
             auth: authRoles.subadmin
           },
 
@@ -93,6 +107,11 @@ const routes = [
             element: <Coursedetail />,
             auth: authRoles.admin
           },
+          {
+            path: '/offlinecourses/:courseId',
+            element: <ASBCoursedetail />,
+            auth: authRoles.admin
+          },
 
           // e-chart rooute
           {
@@ -113,30 +132,31 @@ const routes = [
             element: <Requests />,
             auth: authRoles.admin
           },
+          {
+            path: '/questions',
+            element: <McqForm />,
+            auth: authRoles.admin
+          },
         ]
       },
-      
-     
+
+
 
     ]
   },
 
-  // session pages route
   { path: '/session/404', element: <NotFound /> },
   { path: '/session/signin', element: <JwtLogin /> },
-  { path: '/session/signup', element: <JwtRegister /> },
   { path: '/session/forgot-password', element: <ForgotPassword /> },
   { path: '/signin', element: <JwtLogin /> },
 
   { path: '/', element: <Navigate to="/dashboard" /> },
-  // { path: '/', element: <Navigate to="/dashboard" /> }
 ];
 
 
 export const publicRoutes = [
   { path: '/session/404', element: <NotFound /> },
   { path: '/session/signin', element: <JwtLogin /> },
-  { path: '/session/signup', element: <JwtRegister /> },
   { path: '/session/forgot-password', element: <ForgotPassword /> },
   { path: '/signin', element: <JwtLogin /> },
   { path: '*', element: <Navigate to="/signin" /> }

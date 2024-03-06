@@ -28,7 +28,7 @@ const ForgotPasswordRoot = styled(JustifyBox)(() => ({
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@example.com');
+  const [email, setEmail] = useState('');
 
   const handleFormSubmit = () => {
     console.log(email);
@@ -48,6 +48,7 @@ const ForgotPassword = () => {
                 <TextField
                   type="email"
                   name="email"
+                  placeholder='your@email.com'
                   size="small"
                   label="Email"
                   value={email}

@@ -41,7 +41,7 @@
 
 .lessons-container {
     margin-top: 20px;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .lessons-container h3 {
@@ -59,61 +59,86 @@ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
 .list-group-item {
     text-align: left;
-        margin-top:3px;
-            margin-bottom: 3px;
-            padding: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding: 5px;
 }
 
-.card-header{
+.card-header {
     cursor: pointer;
 }
-.headerrr{
+
+.headerrr {
     display: flex;
-        justify-content: space-between;
-        align-items: baseline;
+    justify-content: space-between;
+    align-items: baseline;
 
 }
-.courseDetails{
+
+.courseDetails {
     width: 100%;
     max-width: 800px;
     margin: auto;
 }
-.card-title{
+
+.card-title {
     text-align: center;
 }
-.titlesss{
-  display: block;
-font-size: 22px;
+
+.titlesss {
+    display: block;
+    font-size: 22px;
     font-weight: 400;
 }
+
 textarea {
     width: 100%;
-        overflow: auto;
-        border: 1px solid #eee;
-        resize: none;
-background-color: #ededed;
-border-radius: 7px;
-height: 30px;
+    overflow: auto;
+    border: 1px solid #eee;
+    resize: none;
+    background-color: #ededed54;
+    ;
+    border-radius: 7px;
+    height: 30px;
 }
-textarea::placeholder{
+
+textarea::placeholder {
     font-size: 40px;
 }
-.Course_img  {
+
+.Course_img {
     width: 100%;
 }
-.Course_img img{
+
+.Course_img img {
     width: 100%;
 }
-    
-.bigit{
-    height:90px
+
+.bigit {
+    height: 90px
 }
-img{
+
+img {
+    height: 75%;
+    /* margin: 20px; */
+    cursor: pointer;
+
+}
+
+.add_form {
     height: 30px;
-        margin: 20px;
-        cursor: pointer;
-    
+    margin: 20px;
+    cursor: pointer;
+
 }
-.btn{
+
+.btn {
     margin: 10px;
+}
+
+/* a{
+    font-size: 30px;
+} */
+.disabled {
+    cursor: no-drop
 }

@@ -1,6 +1,9 @@
-import { Box, Card, Grid, Icon, IconButton, styled, Tooltip } from '@mui/material';
+import { Box, Card, Grid, Icon, styled } from '@mui/material';
 import { Small } from 'app/components/Typography';
-
+import { Details } from 'app/views/ApiBackend/ApiBackend';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
@@ -28,11 +31,22 @@ const Heading = styled('h6')(({ theme }) => ({
 }));
 
 const StatCards = () => {
+  const token = useSelector((state) => state.authToken);
+  const [details, setDetails] = useState({});
+  const Detailsfetch = async () => {
+    const response = await Details(token);
+    setDetails(response.data);
+
+  }
+  useEffect(() => {
+
+    Detailsfetch();
+  }, [])
   const cardList = [
-    { name: 'New Leads', amount: 3050, icon: 'group' },
-    { name: 'This week Sales', amount: '$80,500', icon: 'attach_money' },
-    { name: 'Inventory Status', amount: '8.5% Stock Surplus', icon: 'store' },
-    { name: 'Orders to deliver', amount: '305 Orders', icon: 'shopping_cart' },
+    { name: 'Total Users', amount: `${details.totalUserCount}`, icon: 'group' },
+    { name: 'Total Rewards', amount: parseFloat(details.totalRewards).toFixed(2), icon: <span>&#8377;</span> },
+    { name: 'Total Courses', amount: `${details.courseCount}`, icon: 'store' },
+    { name: 'Total Sub Admin', amount: `${details.subadminCount}`, icon: 'group' },
   ];
 
   return (
@@ -48,11 +62,11 @@ const StatCards = () => {
               </Box>
             </ContentBox>
 
-            <Tooltip title="View Details" placement="top">
+            {/* <Tooltip title="View Details" placement="top">
               <IconButton>
                 <Icon>arrow_right_alt</Icon>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
           </StyledCard>
         </Grid>
       ))}

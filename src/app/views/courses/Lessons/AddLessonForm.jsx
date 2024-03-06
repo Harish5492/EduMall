@@ -1,6 +1,17 @@
+import { LoadingButton } from '@mui/lab';
 import React from "react";
+import { useState } from 'react';
 
 export const AddLessonForm = ({ form, index, setLessonForms, handleAddNewLesson }) => {
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = (index) => {
+        setLoading(true);
+        handleAddNewLesson(index);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+    }
     return (
         <>
             <form key={index}>
@@ -42,9 +53,14 @@ export const AddLessonForm = ({ form, index, setLessonForms, handleAddNewLesson 
                         />
                     </li>
                 </ul>
-                <button type="button" className="edit_lesson btn btn-primary" onClick={() => handleAddNewLesson(index)}>
-                    Save Lesson
-                </button>
+                <LoadingButton
+                    type="submit"
+                    color="primary"
+                    loading={loading}
+                    variant="contained"
+                    sx={{ my: 2 }} onClick={() => handleSubmit(index)}>
+                    Save Details
+                </LoadingButton>
 
 
             </form>

@@ -1,15 +1,14 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 
 body {
     font-family: Helvetica;
     -webkit-font-smoothing: antialiased;
     background: rgba(71, 147, 227, 1);
-   
+
 }
 
 h2 {
-    
+
     text-align: center;
     font-size: 18px;
     text-transform: uppercase;
@@ -26,14 +25,14 @@ h2 {
     padding-left: 10px;
     font-size: 23px;
     font-weight: 20px;
-border:solid 1px;
+    border: solid 1px;
     /* border-collapse: ; */
     width: 100%;
     /* max-width: 100%; */
     white-space: nowrap;
     /* background-color: yellow; */
-    height:50%;
-        font-family: "Monteserrat";
+    height: 50%;
+    font-family: "Monteserrat";
 }
 
 
@@ -47,7 +46,7 @@ border:solid 1px;
 .fl-table td {
     text-align: center;
     padding: 5px;
-    border-right: 1px solid #e0e0e8 ;
+    border-right: 1px solid #e0e0e8;
     border-top: 1px solid;
     font-size: 15px;
 }
@@ -84,7 +83,7 @@ border:solid 1px;
         display: block;
     }
 
- 
+
     .fl-table thead {
         float: left;
     }
@@ -122,18 +121,18 @@ border:solid 1px;
 
     .fl-table tr:nth-child(even) {
         background: transparent;
-        
+
     }
 
     .fl-table tr td:nth-child(odd) {
         background: #F8F8F8;
         border-right: 1px solid #E6E4E4;
-                border-left:  1px solid ;
+        border-left: 1px solid;
     }
 
     .fl-table tr td:nth-child(even) {
         border-right: 1px solid #E6E4E4;
-                        border-left: 1px solid;
+        border-left: 1px solid;
     }
 
     .fl-table tbody td {
@@ -141,6 +140,7 @@ border:solid 1px;
         text-align: center;
     }
 }
+
 ul.pagination {
     display: flex;
     align-items: center;
@@ -154,21 +154,22 @@ ul.pagination li {
 
 .search-filter {
     margin-left: 10px;
-    
+
 
 }
-.btn{
+
+.btn {
     width: 45%;
     font-size: 80%;
     margin: 1px;
 }
+
 .nav-pagee {
     display: contents;
     position: fixed;
     justify-content: center;
     margin-left: 40%;
     margin-right: 40%
-    
 }
 
 .badge {
@@ -180,5 +181,3 @@ ul.pagination li {
     font-family: "Monteserrat";
 
 }
-
-
