@@ -1,0 +1,106 @@
+.dashbord_outer {
+    padding: 30px 0px 0px 0px;
+
+    .dashbord {
+        height: 100%;
+        align-items: center;
+
+        .learning {
+            @media (max-Width:768px) {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            h4 {
+                font-size: 18px;
+                line-height: 1.74;
+                color: #0071dc;
+                font-family: "Montserrat";
+                font-weight: 700;
+                font-display: swap;
+            }
+
+            h3 {
+                font-size: 24px;
+                line-height: 1.8;
+                margin-top: 28px;
+                color: #252525;
+                max-Width: 570px;
+                margin-bottom: 0;
+                font-weight: 400;
+                font-family: "Montserrat", Arial, Helvetica, sans-serif;
+                font-display: swap;
+                @media (max-Width:768px) {
+                    max-Width: 100%;
+                }
+            }
+
+            h2 {
+                font-size: 48px;
+                line-height: 1.4;
+                margin-top: 11px;
+                font-family: "Montserrat";
+                font-weight: 700;
+                font-display: swap;
+            }
+
+            .learning_btn {
+                margin-top: 40px;
+
+                a {
+                    color: #FFFFFF;
+                    font-family: "Montserrat";
+                    font-size: 15px;
+                    font-weight: 400;
+                    border-radius: 5px;
+                    border: none;
+                    text-decoration: none;
+                    padding: 20px 65px;
+                    line-height: 60px;
+                    background-color: #0071dc;
+                    border-color: #0071dc;
+                    font-display: swap;
+                }
+            }
+        }
+
+        .man_image_outer {
+            height: auto;
+
+            .man_image_inner {
+                max-width: 449px;
+                margin: auto;
+            }
+        }
+    }
+}
+
+.dashboard_image {
+    height: 135px !important;
+}
+
+.dashboard_heading {
+    font-size: 40px;
+    line-height: 1.4;
+    margin-top: 11px;
+    font-family: "Montserrat";
+    font-weight: 700;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    font-display: swap;
+}
+.dashboard_card{
+    margin: 0px 10px !important;
+}
+.slick-track {
+    width: 100%;
+
+    .slick-slide {
+        width: 100%;
+
+        .slider_card {
+            margin: 20px;
+        }
+    }
+}
