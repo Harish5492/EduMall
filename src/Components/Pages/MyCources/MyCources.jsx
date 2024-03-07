@@ -12,13 +12,20 @@ import {logout} from "../../../store/userSlice"
 const MyCources = () => {
   const [courses, setCourses] = useState([]);
   const [data ,setData] = useState([])
+<<<<<<< HEAD
   // console.log(data, "data>>>>>>>>>>>");
+=======
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.user.token);
 
   const handleLesson = (courseId) => {
+<<<<<<< HEAD
     navigate(`/lessons/${courseId}`);
+=======
+    navigate(`/auth/lessons/${courseId}`);
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
   };
 
   useEffect(() => {

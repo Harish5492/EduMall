@@ -35,9 +35,15 @@ const Dashbord = () => {
   const showCard = (courseId) => {
     const courseExists = userCourses.find((userCourse) => userCourse._id === courseId);
     if (courseExists) {
+<<<<<<< HEAD
       navigate(`/lessons/${courseId}`);
     } else {
       navigate(`/course_detail/${courseId}`);
+=======
+      navigate(`/auth/lessons/${courseId}`);
+    } else {
+      navigate(`/auth/course_detail/${courseId}`);
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
     }
   };
 

@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+=======
+
+.question_header{
+    font-size: 35px;
+    font-weight: 400;
+    line-height: 1.4;
+    margin: 25px 0px 20px 0px;
+    font-family: "Segoe UI",Arial,sans-serif;
+}
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
 .quiz_container{
     h1{
         display: block;
@@ -11,9 +22,20 @@
         label{
             font-size: 18px;
             display: block;
+<<<<<<< HEAD
             font-family: "Inter","sens-serif";
             input{
                 margin: 10px;
+=======
+            font-family: "Inter", "sens-serif";
+            background-color: #E7E9EB;
+            display: block;
+            padding: 10px 10px 10px 30px;
+            cursor: pointer;
+            margin-bottom: 2px ;
+            input{
+                margin: 10px 25px 10px 10px;
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
             }
         }
     }
@@ -21,8 +43,13 @@
 .result{
     display: flex;
     justify-content: space-between;
+<<<<<<< HEAD
     align-items: center;
     margin-top: 40px;
+=======
+    align-items: flex-end;
+    margin-top: 30px;
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
 .submit_answers{
     color: #FFFFFF;
     font-family: "Montserrat";
@@ -36,6 +63,7 @@
     background-color: #0071dc;
     border-color: #0071dc;
 }
+<<<<<<< HEAD
 .answers{
     border: 1px solid lightgray;
     padding: 10px;
@@ -47,4 +75,47 @@
         font-size: 18px;
     }
 }
+=======
+
+}
+.next_button{
+    color: #FFFFFF;
+    font-family: "Montserrat";
+    font-size: 15px;
+    font-weight: 400;
+    border-radius: 5px;
+    height: 50px;
+    border: none;
+    text-decoration: none;
+    padding: 10px 45px;
+    opacity: 0.8;
+    background-color: #0071dc;
+    // background-color: #04AA6D;
+    border-color: #0071dc;
+    margin-top: 30px;
+}
+.answers{
+    // border: 1px solid lightgray;
+    padding:20px 10px;
+    border-radius: 5px;
+    background-color: #EEF0F4;
+    text-align: center;
+    h1{
+        font-family: "Segoe UI",Arial,sans-serif;
+        font-weight: 400;
+        margin: 10px 0;
+    }
+    p{
+        padding: 10px 0px 0px 0px;
+        margin: 0;
+        font-size: 18px;
+        font-family: "Inter", "sens-serif";
+    }
+    .warn{
+        color: red;
+    }
+    .success{
+        color: #04AA6D;
+    }
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
 }

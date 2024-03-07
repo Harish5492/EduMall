@@ -18,7 +18,10 @@ const userSlice = createSlice({
       state.token = action.payload.token;
     },
     
+<<<<<<< HEAD
 
+=======
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
     logout: (state) => {
       if (state !== null) {
          state.token = null;

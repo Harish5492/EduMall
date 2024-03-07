@@ -110,7 +110,11 @@ export const updatePasswordOnBackend = async (values) => {
 export const getAllCources = async () => {
   try {
     const resp = await axios.get(`${API_BASE_URL}/user/allCourses`);
+<<<<<<< HEAD
     const data = resp.data; 
+=======
+    const data = resp.data;
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
     console.log("Response from getAllCources", data);
     return data;
   } catch (error) {
@@ -122,7 +126,11 @@ export const getAllCources = async () => {
 
 
 
+<<<<<<< HEAD
 export const getLessons = async (courseId,token) => {
+=======
+export const getLessons = async (courseId, token) => {
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
   try {
     const response = await axios.get(`${API_BASE_URL}/user/allCourses/${courseId}`, {
       headers: {
@@ -141,7 +149,11 @@ export const getLessons = async (courseId,token) => {
 
 
 export const BillingApi = async (values, token) => {
+<<<<<<< HEAD
   console.log(values,"values");
+=======
+  console.log(values, "values");
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
   try {
     const response = await axios.post(`${API_BASE_URL}/user/payment`, values, {
       headers: {
@@ -169,12 +181,20 @@ export const MyCourcesApi = async (token, values = {}) => {
     console.log('API response:', response.data);
     return response.data;
   } catch (error) {
+<<<<<<< HEAD
     console.log(error,"????????????");
+=======
+    console.log(error, "????????????");
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
     return error.response;
   }
 };
 
+<<<<<<< HEAD
 export const UserDetails = async( token) => {
+=======
+export const UserDetails = async (token) => {
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
   try {
     const response = await axios.get(`${API_BASE_URL}/user/profile`, {
       headers: {
@@ -184,13 +204,21 @@ export const UserDetails = async( token) => {
     });
     console.log('API response:', response.data);
     return response.data;
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
   } catch (error) {
     return error
   }
 }
 
+<<<<<<< HEAD
 export const ReffrelCodeApi = async( token) => {
+=======
+export const ReffrelCodeApi = async (token) => {
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
   try {
     const response = await axios.get(`${API_BASE_URL}/user/referalCode`, {
       headers: {
@@ -200,16 +228,26 @@ export const ReffrelCodeApi = async( token) => {
     });
     console.log('API response:', response.data);
     return response.data;
+<<<<<<< HEAD
     
   } catch (error) {
     
+=======
+
+  } catch (error) {
+
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
   }
 }
 
 export const getReffrelCodeApi = async (token, values) => {
   console.log(">>>>>>>>> token, values>>>>>>>>>>", token, values);
   try {
+<<<<<<< HEAD
     const response = await axios.post(`${API_BASE_URL}/user/applyReferalCode`,values, {
+=======
+    const response = await axios.post(`${API_BASE_URL}/user/applyReferalCode`, values, {
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
       headers: {
         'Content-Type': 'application/json',
         'x-api-authorization': token,
@@ -223,10 +261,17 @@ export const getReffrelCodeApi = async (token, values) => {
     return error
   }
 };
+<<<<<<< HEAD
  
 export const getAffileateApi = async (token) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/user/affiliationRequest`,{
+=======
+
+export const getAffileateApi = async (token) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/user/affiliationRequest`, {
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
 
     },
       {
@@ -240,13 +285,21 @@ export const getAffileateApi = async (token) => {
     return response.data;
   } catch (error) {
     console.error('Error in API call:', error);
+<<<<<<< HEAD
     throw error; 
+=======
+    throw error;
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
   }
 };
 
 export const getAffileateStatusApi = async (token) => {
   try {
+<<<<<<< HEAD
     const response = await axios.post(`${API_BASE_URL}/user/affiliateRequestStatus`,{
+=======
+    const response = await axios.post(`${API_BASE_URL}/user/affiliateRequestStatus`, {
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
     },
       {
         headers: {
@@ -259,7 +312,11 @@ export const getAffileateStatusApi = async (token) => {
     return response.data;
   } catch (error) {
     console.error('Error in API call:', error);
+<<<<<<< HEAD
     throw error; 
+=======
+    throw error;
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
   }
 };
 
@@ -275,7 +332,11 @@ export const updateUserDetails = async (_id, data) => {
     return response.data;
   } catch (error) {
     console.error('Error in updateUserDetails:', error);
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
     if (error.response) {
       const { data } = error.response;
 
@@ -297,34 +358,101 @@ export const updateUserDetails = async (_id, data) => {
   }
 };
 
+<<<<<<< HEAD
 export const AllQuestions = async (token) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/question/getAllQuestions`,{
+=======
+export const SubjectApi = async(token) => {
+  try {
+      const response = await axios.get(`${API_BASE_URL}/question/getSubjects`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-authorization': token,
+        },
+      })
+      console.log(response,"this is resp from SubjectApi");
+      return response
+  } catch (error) {
+    console.log(error);
+     return error
+  }
+}
+
+export const AllQuestions = async (subject,token) => {
+  console.log(subject,">>>>>>>>>>>>>");
+  try {
+    const response = await axios.get(`${API_BASE_URL}/question/getAllQuestions/${subject}`, {
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
       headers: {
         'Content-Type': 'application/json',
         'x-api-authorization': token,
       },
     })
+<<<<<<< HEAD
     console.log("allquestionsresponse",response);
+=======
+    console.log("allquestionsresponse", response);
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
     return response
   } catch (error) {
     return error
   }
 }
 
+<<<<<<< HEAD
 export const SubmitAnswers = async (token,values) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/question/submit`,values,{
+=======
+export const SubmitAnswers = async (token, values,subject) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/question/submit`,  { ...values, subject }, {
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
       headers: {
         'Content-Type': 'application/json',
         'x-api-authorization': token,
       },
     })
+<<<<<<< HEAD
     console.log("allquestionsresponse",response);
+=======
+    console.log("allquestionsresponse", response);
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
     return response
   } catch (error) {
     return error
   }
 }
+<<<<<<< HEAD
   
   
+=======
+
+export const OfflineCourcesApi = async (values) => {
+  try {
+    const resp = await axios.get(`${API_BASE_URL}/ASB/getAllCourses`);
+    const data = resp.data;
+    console.log("Response from OfflineCourcesApi", data);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const ContactUsApi = async (values) => {
+  try {
+    const resp = await axios.post(`${API_BASE_URL}/ASB/asbStudentEnroll`, values, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = resp.data;
+    console.log("Response from ContactUsApi", data);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+>>>>>>> b9c88c5cc47ab04600ed54a978cde72875235e8f
