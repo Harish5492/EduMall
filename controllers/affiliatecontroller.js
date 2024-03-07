@@ -196,7 +196,7 @@ class affiliate {
                 }
             })
 
-console.log(records)
+            console.log(records)
             res.json({ message: "Your Records : ",records, status: true })
 
         } catch (error) {

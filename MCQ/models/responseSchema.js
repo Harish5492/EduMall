@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-
+console.log(mongoose.models)
 const userResponseSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'UserDetails',
     required: true
   },
   responses: [{
@@ -23,6 +23,10 @@ const userResponseSchema = new mongoose.Schema({
   },
   percentage: {
     type: Number,
+    required: true
+  },
+  subject: {
+    type: String,
     required: true
   }
 }, { timestamps: true });

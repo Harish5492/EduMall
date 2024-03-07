@@ -2,14 +2,15 @@ const questionRouter = require('express').Router();
 
 const authMiddleware = require('../middleware/authenticate');
 const role = require('../middleware/role')
-
+const User = require('../models/usermodel');
 const Question = require('./models/questionsSchema');
 const UserResponse = require('./models/responseSchema');
 
-questionRouter.post('/addQuestions', async (req, res) => {
+
+questionRouter.post('/addQuestions',authMiddleware,role.isAdmin, async (req, res) => {
     try {
-      const { questionText, options, correctOptionIndex } = req.body;
-      const question = new Question({ questionText, options, correctOptionIndex });
+      const { questionText, options, correctOptionIndex,subject } = req.body;
+      const question = new Question({ questionText, options, correctOptionIndex,subject });
       await question.save();
       res.status(201).json(question);
     } catch (err) {
@@ -18,11 +19,22 @@ questionRouter.post('/addQuestions', async (req, res) => {
   });
   
   // Route for fetching questions for the test
-  questionRouter.get('/getAllQuestions',authMiddleware, async (req, res) => {
+  questionRouter.get('/getSubjects',authMiddleware, async (req, res) => {
     try {
-      console.log("inside getallquestions")
-      const questions = await Question.find().select('options _id questionText');
-      res.json(questions);
+      console.log("inside getSubjects")
+      const subjects = await Question.distinct('subject');
+      res.json({subjects,status:true});
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  });
+  
+  questionRouter.get('/getAllQuestions/:subject',authMiddleware, async (req, res) => {
+    try {
+      console.log("inside getallquestions",req.params.subject)
+      const questions = await Question.find({subject:req.params.subject}).select('options _id questionText');
+      res.json({questions,status:true});
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -34,7 +46,7 @@ questionRouter.post('/addQuestions', async (req, res) => {
     try {
         console.log("inside questions submit", req.body);
 
-        const { decodedToken, responses } = req.body;
+        const { decodedToken, responses, subject } = req.body;
 
         // Validate user ID and responses
         if (!decodedToken.id || !responses || !Array.isArray(responses)) {
@@ -69,12 +81,29 @@ questionRouter.post('/addQuestions', async (req, res) => {
             userId: decodedToken.id,
             responses: userResponses,
             score: score,
-            percentage: percentage
+            percentage: percentage,
+            subject:subject
         });
 
         res.json({ status: true, score, totalQuestions, percentage });
     } catch (err) {
       console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  });
+
+  questionRouter.get('/getResponses',authMiddleware,role.isAdmin, async (req, res) => {
+    try {
+      console.log("inside getResponses")
+
+      const responses = await UserResponse.find().populate({
+      path: 'userId',
+      select: 'firstName lastName email' // Specify the field you want to include
+  });
+
+      res.json({responses,status:true});
+    } catch (err) {
+      console.error(err);
       res.status(500).send('Server Error');
     }
   });
