@@ -48,7 +48,7 @@ const CartItems = () => {
     let checkoutTotal = isCodeApplied ? discountedTotal : total;
 
     if (token) {
-      navigate("/auth/billing_details", { state: { totalPrice: checkoutTotal, queryString: queryString } });
+      navigate("/billing_details", { state: { totalPrice: checkoutTotal, queryString: queryString } });
       dispatch(clearCart());
     } else {
       toast.error("You have to Login first", {

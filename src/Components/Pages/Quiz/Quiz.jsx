@@ -38,7 +38,7 @@ const Quiz = () => {
     }, [token,dispatch])
 
     const handleClick = (clickedSubject) => {
-        navigate(`/auth/questionAnswers/${clickedSubject}`)
+        navigate(`/questionAnswers/${clickedSubject}`)
     }
 
     return (

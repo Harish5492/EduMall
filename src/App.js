@@ -38,7 +38,7 @@ function App() {
                     <Route path="/offlineCources" element={<OfflineCources />} />
                     <Route path="/offlineCourcesdetail/:courseId" element={<OfflineCourcesDetail />} />
                     <Route path="*" element={<Dashbord />} />
-                <Route path="/auth" element={<PrivateRoutes/>}>
+                <Route  element={<PrivateRoutes/>}>
                     <Route path="mycourses" element={<MyCources />} />
                     <Route path="lessons/:courseId" element={<Lessons />} />
                     <Route path="billing_details" element={<BillingDetails/>} />

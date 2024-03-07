@@ -5,14 +5,20 @@ import { NavLink } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import Rate from '../Rate/Rate';
 import { useNavigate } from 'react-router-dom';
-import { getAllCources } from '../../Api';
+import { getAllCources,MyCourcesApi } from '../../Api';
+import { toast } from 'react-toastify';
+import {logout,setMyCourses} from "../../../store/userSlice";
+import {setCourseDatas} from "../../../store/coursesSlice"
 
 const Dashbord = () => {
   const [courseData, setCourseData] = useState([]);
-  const userCourses = useSelector((state) => state.user.myCourses || []);
+  const [courses, setCourses] = useState([]);
+  const token = useSelector((state) => state.user.token);
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +26,7 @@ const Dashbord = () => {
         const data = await getAllCources();
         if (data && data.courses) {
           setCourseData(data);
+          dispatch(setCourseDatas(data))
         } else {
           console.error('Invalid data structure:', data);
         }
@@ -28,16 +35,44 @@ const Dashbord = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [dispatch, token]);
 
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await MyCourcesApi(token);
+        if (response && response.myCourses) {
+          dispatch(setMyCourses(response.myCourses));
+          setCourses(response.myCourses);
+          console.log(response.myCourses, "responseresponse");
+        } else {
+          if(response === "error : TokenExpiredError: jwt expired"){
+            toast.error("Your session is expired you have to login", {
+              position: "top-center",
+              autoClose: 2000,
+              theme: "colored"
+              })
+             dispatch(logout())
+          }else{
+           console.error('Invalid response format:', response);
+          }
+     }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, token]);
+
 
   const showCard = (courseId) => {
-    const courseExists = userCourses.find((userCourse) => userCourse._id === courseId);
+    const courseExists = courses.find((userCourse) => userCourse._id === courseId);
     if (courseExists) {
-      navigate(`/auth/lessons/${courseId}`);
+      navigate(`/lessons/${courseId}`);
     } else {
-      navigate(`/auth/course_detail/${courseId}`);
+      navigate(`/course_detail/${courseId}`);
     }
   };
 

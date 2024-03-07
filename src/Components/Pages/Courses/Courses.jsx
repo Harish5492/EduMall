@@ -1,67 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './Courses.scss';
 import Rate from '../Rate/Rate';
-import { getAllCources, MyCourcesApi } from '../../Api';
 
 const Courses = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [courseData, setCourseData] = useState({});
-  const [userCourses, setUserCourses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 8;
-  const token = useSelector((state) => state.user.token);
+  const userCourses = useSelector((state) => state.user.myCourses);
+  const courseData = useSelector((state) => state.courses.courseData);
+
+
   const affiliateToken = ""
   //  "U2FsdGVkX1/R/UpswW6L9OSoccrOwHHh0jZzKbs5X3QW3LOYET98Lbo6x+SN9x4engsYrW+ekh1s4Z8/TedVPVPNtJvjRzIPGiQdPYxkIIm0IpNWyb5ZPrYAa+RdAZwL6Z8z5pU+CeQzeBoYUmGgjx5F2SGAxi6dQCQbudAQHSSnnwrHA1y5Nv/gEoImyAnsSHgbD51xknj7SW912ICnLw=="
 
-  console.log(courseData,"courseData");
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getAllCources();
-        console.log('data', data);
-        setCourseData(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await MyCourcesApi(token);
-        if (response && response.myCourses) {
-          setUserCourses(response.myCourses);
-          // console.log(response.myCourses, 'responseresponse');
-        } else {
-          console.error('Invalid response format:', response);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch, token]);
 
   const showCard = (courseId) => {
     const courseExists = userCourses.find((userCourse) => userCourse._id === courseId);
 
     const url = courseExists
-    ? `/auth/lessons/${courseId}`
+    ? `/lessons/${courseId}`
     : affiliateToken
-    ? `/auth/course_detail/${courseId}?affiliateToken=${affiliateToken}`
-    : `/auth/course_detail/${courseId}`;
+    ? `/course_detail/${courseId}?affiliateToken=${affiliateToken}`
+    : `/course_detail/${courseId}`;
 
   navigate(url);
   };
 
-  // Calculate the range of courses to display for the current page
   const indexOfLastCourse = currentPage * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
   const currentCourses =

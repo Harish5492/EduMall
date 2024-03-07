@@ -1,54 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { MyCourcesApi } from "../../Api";
+import React from "react";
+import { useSelector } from "react-redux";
 import Rate from "../Rate/Rate";
 import { Link, useNavigate } from "react-router-dom";
 import SpinerLogo from "../../CommonComponents/SpinerLogo";
-import { setMyCourses } from "../../../store/userSlice";
 import "./MyCources.scss";
-import { toast } from 'react-toastify';
-import {logout} from "../../../store/userSlice"
 
 const MyCources = () => {
-  const [courses, setCourses] = useState([]);
-  const [data ,setData] = useState([])
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector((state) => state.user.token);
+  const courses = useSelector((state) => state.user.myCourses);
+  console.log(courses,"coursescourses>>>>>>>>>>");
 
   const handleLesson = (courseId) => {
-    navigate(`/auth/lessons/${courseId}`);
+    navigate(`/lessons/${courseId}`);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await MyCourcesApi(token);
-        if (response && response.myCourses) {
-          dispatch(setMyCourses(response.myCourses));
-          setCourses(response.myCourses);
-          setData(response);
-          console.log(response.myCourses, "responseresponse");
-        } else {
-          if(response === "error : TokenExpiredError: jwt expired"){
-            toast.error("Your session is expired you have to login", {
-              position: "top-center",
-              autoClose: 2000,
-              theme: "colored"
-              })
-             dispatch(logout())
-             navigate("/")
-          }else{
-           console.error('Invalid response format:', response);
-          }
-     }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch, token,navigate]);
 
   if (!courses) {
     return <SpinerLogo />;
@@ -92,7 +57,7 @@ const MyCources = () => {
                   </div>
                 </div>
               ))
-            ) : data.status === true && data.myCourses.length === 0 ? (
+            ) :  courses?.length === 0 ? (
               <>
                 <p className="msg text-center">
                   Oops! It seems like you haven't enrolled in any courses yet.

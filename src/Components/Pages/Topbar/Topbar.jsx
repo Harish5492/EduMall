@@ -72,18 +72,18 @@ const Topbar = () => {
                                 </div>
 
                                 <div className='links'>
-                                    <Link to="/auth/mycourses" className='nav-link'>MyCources</Link>
+                                    <Link to="/mycourses" className='nav-link'>MyCources</Link>
                                 </div>
                                
                                 <div className='links'>
-                                    <Link to="/auth/quiz" className='nav-link'>Quiz</Link>
+                                    <Link to="/quiz" className='nav-link'>Quiz</Link>
                                 </div>
                                
-                                <Link to="/auth/my_profile" className='cart_icon my_profile' >
+                                <Link to="/my_profile" className='cart_icon my_profile' >
                                     <FaUserCircle />
                                 </Link>
 
-                                <Link to="/auth/cartitems" className='cart_icon'>
+                                <Link to="/cartitems" className='cart_icon'>
                                     <FaCartPlus />
                                     <div className='total_items'>
                                         {totalItems}
