@@ -53,10 +53,10 @@ const Courses = () => {
     const courseExists = userCourses.find((userCourse) => userCourse._id === courseId);
 
     const url = courseExists
-    ? `/lessons/${courseId}`
+    ? `/auth/lessons/${courseId}`
     : affiliateToken
-    ? `/course_detail/${courseId}?affiliateToken=${affiliateToken}`
-    : `/course_detail/${courseId}`;
+    ? `/auth/course_detail/${courseId}?affiliateToken=${affiliateToken}`
+    : `/auth/course_detail/${courseId}`;
 
   navigate(url);
   };
