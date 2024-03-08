@@ -1,14 +1,10 @@
-const questionRouter = require('express').Router();
+const Question = require('../models/questionsSchema');
+const UserResponse = require('../models/responseSchema');
+class QuestionsAns{
 
-const authMiddleware = require('../middleware/authenticate');
-const role = require('../middleware/role')
-const User = require('../models/usermodel');
-const Question = require('./models/questionsSchema');
-const UserResponse = require('./models/responseSchema');
-
-
-questionRouter.post('/addQuestions',authMiddleware,role.isAdmin, async (req, res) => {
+ async question (req, res) {
     try {
+      console.log("inside question add",req.body)
       const { questionText, options, correctOptionIndex,subject } = req.body;
       const question = new Question({ questionText, options, correctOptionIndex,subject });
       await question.save();
@@ -16,34 +12,31 @@ questionRouter.post('/addQuestions',authMiddleware,role.isAdmin, async (req, res
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
-  });
+  }
   
-  // Route for fetching questions for the test
-  questionRouter.get('/getSubjects',authMiddleware, async (req, res) => {
+  async getSubjects(req,res){
     try {
       console.log("inside getSubjects")
       const subjects = await Question.distinct('subject');
       res.json({subjects,status:true});
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send('Internal Server Error');
     }
-  });
+  }
   
-  questionRouter.get('/getAllQuestions/:subject',authMiddleware, async (req, res) => {
+  async getAllQuestions(req,res){ 
     try {
       console.log("inside getallquestions",req.params.subject)
       const questions = await Question.find({subject:req.params.subject}).select('options _id questionText');
       res.json({questions,status:true});
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send('Internal Server Error');
     }
-  });
+  }
   
-  // Route for submitting user responses
-  questionRouter.post('/submit', authMiddleware, async (req, res) => {
-    try {
+  async Submit(req,res){ try {
         console.log("inside questions submit", req.body);
 
         const { decodedToken, responses, subject } = req.body;
@@ -54,7 +47,7 @@ questionRouter.post('/addQuestions',authMiddleware,role.isAdmin, async (req, res
         }
 
         const userResponses = [];
-
+ 
         // Calculate score
         let score = 0;
         for (const response of responses) {
@@ -88,12 +81,11 @@ questionRouter.post('/addQuestions',authMiddleware,role.isAdmin, async (req, res
         res.json({ status: true, score, totalQuestions, percentage });
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send('Internal  Server Error');
     }
-  });
+  }
 
-  questionRouter.get('/getResponses',authMiddleware,role.isAdmin, async (req, res) => {
-    try {
+  async getResponse(req,res){ try {
       console.log("inside getResponses")
 
       const responses = await UserResponse.find().populate({
@@ -104,10 +96,11 @@ questionRouter.post('/addQuestions',authMiddleware,role.isAdmin, async (req, res
       res.json({responses,status:true});
     } catch (err) {
       console.error(err);
-      res.status(500).send('Server Error');
+      res.status(500).send('Internal Server Error');
     }
-  });
+  }
+}
   
   
 
-module.exports = questionRouter;
+module.exports = new QuestionsAns()

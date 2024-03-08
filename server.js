@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoDB = require('./config/database');
 const Api = require('./routers/index');
-const question = require('./MCQ/routes');
 const {attachWebSocket,sendNotificationToAll} = require('./websocket/websocket');
 
 const app = express(); 
@@ -34,7 +33,7 @@ app.use('/user', Api.affiliateRouter);
 app.use('/admin/adminArea', Api.rewardRouter);
 app.use('/ASB',Api.asbRouter)
 app.use('/admin/adminArea', Api.adminRouter); 
-app.use('/question/', question); 
+app.use('/question/', Api.questionAnsRouter); 
 
 
 // Attach WebSocket

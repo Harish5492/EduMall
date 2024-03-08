@@ -8,8 +8,9 @@ const affiliateRouter = require('./affiliate.router')
 const rewardRouter = require('./reward.router')
 const adminRouter = require('./admin.router')
 const asbRouter = require('./asb.router')
+const questionAnsRouter = require('./que.ans.router')
 
-const routerIndex = { userRouter, otpRouter, courseRouter, billingRouter ,referalRouter ,affiliateRouter ,rewardRouter,adminRouter,asbRouter}
+const routerIndex = { userRouter, otpRouter, courseRouter, billingRouter ,referalRouter ,affiliateRouter ,rewardRouter,adminRouter,asbRouter,questionAnsRouter}
 
 module.exports = routerIndex
 
