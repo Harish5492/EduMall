@@ -70,6 +70,7 @@ const QuestionAnswers = () => {
                     <div className="question_header">
                         <p>Question {currentQuestionIndex + 1} of {questions.length}</p>
                     </div>
+                    
                     <div className="quiz_container">
                         {questions.length > 0 && currentQuestionIndex < questions.length && (
                             <div key={currentQuestionIndex}>
@@ -96,6 +97,7 @@ const QuestionAnswers = () => {
                             </div>
                         )}
                     </div>
+                   
                     <div className="result">
                         {currentQuestionIndex === questions.length - 1 && (
                                 <button className="submit_answers" onClick={handleSubmit}>Submit</button>

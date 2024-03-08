@@ -110,6 +110,7 @@ export const updatePasswordOnBackend = async (values) => {
 export const getAllCources = async () => {
   try {
     const resp = await axios.get(`${API_BASE_URL}/user/allCourses`);
+
     const data = resp.data;
     console.log("Response from getAllCources", data);
     return data;
@@ -117,6 +118,7 @@ export const getAllCources = async () => {
     console.log(error);
   }
 }
+
 
 
 
@@ -141,6 +143,7 @@ export const getLessons = async (courseId, token) => {
 
 
 export const BillingApi = async (values, token) => {
+
   console.log(values, "values");
   try {
     const response = await axios.post(`${API_BASE_URL}/user/payment`, values, {
@@ -169,12 +172,15 @@ export const MyCourcesApi = async (token, values = {}) => {
     console.log('API response:', response.data);
     return response.data;
   } catch (error) {
+
     console.log(error, "????????????");
     return error.response;
   }
 };
 
+
 export const UserDetails = async (token) => {
+
   try {
     const response = await axios.get(`${API_BASE_URL}/user/profile`, {
       headers: {
@@ -185,10 +191,12 @@ export const UserDetails = async (token) => {
     console.log('API response:', response.data);
     return response.data;
 
+
   } catch (error) {
     return error
   }
 }
+
 
 export const ReffrelCodeApi = async (token) => {
   try {
@@ -224,6 +232,7 @@ export const getReffrelCodeApi = async (token, values) => {
   }
 };
 
+
 export const getAffileateApi = async (token) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/user/affiliationRequest`, {
@@ -240,6 +249,7 @@ export const getAffileateApi = async (token) => {
     return response.data;
   } catch (error) {
     console.error('Error in API call:', error);
+
     throw error;
   }
 };
@@ -275,7 +285,6 @@ export const updateUserDetails = async (_id, data) => {
     return response.data;
   } catch (error) {
     console.error('Error in updateUserDetails:', error);
-
     if (error.response) {
       const { data } = error.response;
 
@@ -343,7 +352,6 @@ export const SubmitAnswers = async (token, values,subject) => {
     return error
   }
 }
-
 export const OfflineCourcesApi = async (values) => {
   try {
     const resp = await axios.get(`${API_BASE_URL}/ASB/getAllCourses`);

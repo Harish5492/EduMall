@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import "./Topbar.scss";
 import logo from "../../../Assets/Images/dark-logo.webp";
-// import search_icon from "../../../Assets/Images/search_icon.svg";
 import Login from '../Login/Login';
 import Signup from '../Signup/Signup';
 import { FaCartPlus } from "react-icons/fa";
