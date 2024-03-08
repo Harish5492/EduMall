@@ -141,7 +141,6 @@ class courseController {
   }
   async getAllCourses(req, res) {
     try {
-
       console.log("getAllCourses API has been accessed")
       const {decodedToken} = req.body
       const page = parseInt(req.query.page) || 1;

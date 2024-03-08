@@ -11,6 +11,7 @@ const payment = require('../models/payment.model')
 class dashboardController {
 
  async dashboardData(req,res){
+    try{
     const totalUserCount = await UserDetails.countDocuments();
     const courseCount = await Course.countDocuments();
     const totalRewards = await AffiliateMarketings.aggregate([
@@ -28,7 +29,7 @@ class dashboardController {
     res.json({ status: true, totalUserCount, courseCount,totalRewards: totalRewards[0].totalRewards,userCount,adminCount,subadminCount,transactionCount});
 } catch (error) {
   res.status(500).send(error);
-}
+}}
 
 }
 

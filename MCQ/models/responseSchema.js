@@ -1,17 +1,16 @@
 const mongoose = require('mongoose');
-console.log(mongoose.models)
 const userResponseSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'UserDetails',
     required: true
-  },
+  }, 
   responses: [{
     questionId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Question',
       required: true
-    },
+    },    
     selectedOptionIndex: {
       type: Number,
       required: true

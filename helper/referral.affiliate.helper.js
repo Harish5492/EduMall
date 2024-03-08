@@ -29,6 +29,7 @@ class referalAndAffiliate {
     errorCheckValidCode(findCode) {
         console.log("findCode", findCode)
         if (!findCode) throw { message: "Invalid Code", status: false }
+        // console.log(findCode.expiresAt ,"\n", (new Date),(new Date()))
         if (findCode.expiresAt < new Date) throw { message: "Code Expired", status: false }
     }
 
@@ -48,8 +49,8 @@ class referalAndAffiliate {
             client.messages
                 .create({
                     body: `"Congratulations You are now SubAdmin. Please login on the Dashboard using the same credentials"`,
-                    from: '+12058283986',
-                    to: '+918872512811'
+                    from: '+12182280015',
+                    to: '+918580739096'
                 })
         }
         catch (error) {

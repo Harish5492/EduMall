@@ -12,7 +12,8 @@ class referal {
             const findCode = await referalCode.findOne({ referrelOwner: decodedToken.id })
                 .sort({ createdAt: -1 }) // Sort in descending order based on createdAt (replace with your actual timestamp field)
                 .exec()
-            if (findCode) {
+                // console.log("findCode",findCode)
+            if (findCode && (findCode.expiresAt > new Date)) {
                 return res.json({ message: "Code Already generated ", status: true, referrelCode: findCode.referrelCode });
             }  
  
