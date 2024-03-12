@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const Question = require('../models/questionsSchema');
 const model = require('../models/usermodel');
 
 class UserHelper {
@@ -29,7 +30,33 @@ class UserHelper {
     if (phoneExist) throw { message: "phoneNumber already exists", status: false }
   }
 
+  async checkRequest(decodedToken,responses){
+    if (!decodedToken.id || !responses || !Array.isArray(responses)) {
+      return res.status(400).json({ msg: 'Invalid request body' });
+  }
+  }
 
+async calculateScore(responses){
+  const userResponses = [];
+ 
+  // Calculate score
+  let score = 0;
+  for (const response of responses) {
+      const question = await Question.findById(response.questionId);
+      if (!question) {
+          return res.status(400).json({ msg: 'Question not found' });
+      }
+      if (question.correctOptionIndex === response.selectedOptionIndex) {
+          score++;
+      }
+      userResponses.push({
+          questionId: response.questionId,
+          selectedOptionIndex: response.selectedOptionIndex
+      });
+  }
+
+  return {userResponses,score};
+}
 }
 
 module.exports = new UserHelper()

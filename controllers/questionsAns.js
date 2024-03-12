@@ -1,5 +1,6 @@
 const Question = require('../models/questionsSchema');
 const UserResponse = require('../models/responseSchema');
+const questionAndAnsHelper = require('../helper/user.helper')
 class QuestionsAns{
 
  async question (req, res) {
@@ -123,27 +124,8 @@ class QuestionsAns{
         const { decodedToken, responses, subject } = req.body;
 
         // Validate user ID and responses
-        if (!decodedToken.id || !responses || !Array.isArray(responses)) {
-            return res.status(400).json({ msg: 'Invalid request body' });
-        }
-
-        const userResponses = [];
- 
-        // Calculate score
-        let score = 0;
-        for (const response of responses) {
-            const question = await Question.findById(response.questionId);
-            if (!question) {
-                return res.status(400).json({ msg: 'Question not found' });
-            }
-            if (question.correctOptionIndex === response.selectedOptionIndex) {
-                score++;
-            }
-            userResponses.push({
-                questionId: response.questionId,
-                selectedOptionIndex: response.selectedOptionIndex
-            });
-        }
+        await questionAndAnsHelper.checkRequest(decodedToken,responses)
+        const {userResponses,score} = await questionAndAnsHelper.calculateScore(responses)
 
         // Calculate percentage
         const totalQuestions = responses.length;
