@@ -36,19 +36,19 @@ const CourseDetail = () => {
 
     };
 
+    const fetchCourseDetails = async () => {
+        try {
+            const response = await ASBCoursesById(token, courseId);
+            if (response.status === 200) {
+                setCourseDetail(response.data.course);
+            }
+        } catch (error) {
+            console.error("Error fetching data", error);
+        }
+    };
 
     useEffect(() => {
 
-        const fetchCourseDetails = async () => {
-            try {
-                const response = await ASBCoursesById(token, courseId);
-                if (response.status === 200) {
-                    setCourseDetail(response.data.course);
-                }
-            } catch (error) {
-                console.error("Error fetching data", error);
-            }
-        };
         fetchCourseDetails();
     }, [courseId]);
 

@@ -6,6 +6,7 @@ import { GetReferralLink, handleRequest } from "../ApiBackend/ApiBackend"
 import Loading from "app/components/MatxLoading";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { LoadingButton } from "@mui/lab";
 
 const Affiliate = () => {
     const token = useSelector((state) => state.authToken);
@@ -21,13 +22,14 @@ const Affiliate = () => {
     const [res, setRes] = useState({});
     const [debounceTime, setDebounceTime] = useState(null);
     const [roleStatus, setroleStatus] = useState(true);
+    const [acceptLoading, setAcceptLoading] = useState({});
+    const [rejectLoading, setRejectLoading] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
         const controller = new AbortController();
         const signal = controller.signal;
         setSignal(signal);
-        let isMounted = true;
         if (debounceTime) {
             clearTimeout(debounceTime);
         }
@@ -97,10 +99,20 @@ const Affiliate = () => {
     }
 
     const handleAccept = async (requestId) => {
+        setAcceptLoading((prevStates) => ({
+            ...prevStates,
+            [requestId]: true,
+        }))
         try {
             const response = await handleRequest(requestId, 'Success', token);
             if (response.data.status === true) {
-                setRes(response)
+                setRes(response);
+                setTimeout(() => {
+                    setAcceptLoading((prevStates) => ({
+                        ...prevStates,
+                        [requestId]: false,
+                    }))
+                }, 1000);
             }
             fetchPending();
 
@@ -111,10 +123,19 @@ const Affiliate = () => {
     }
 
     const handleReject = async (requestId) => {
+        setRejectLoading((prevStates) => ({
+            ...prevStates,
+            [requestId]: true,
+        }))
         try {
             const response = await handleRequest(requestId, 'Failure', token);
-            if (response.status) {
-
+            if (response.data.status) {
+                setTimeout(() => {
+                    setAcceptLoading((prevStates) => ({
+                        ...prevStates,
+                        [requestId]: false,
+                    }))
+                }, 1000);
 
             }
             fetchPending();
@@ -258,8 +279,22 @@ const Affiliate = () => {
                                                     <div className="d-flex  justify-content-evenly ">
                                                         {requestss?.requestStatus === "Pending" ? (
                                                             <>
-                                                                <button className='btn btn-success ' onClick={() => handleAccept(requestss._id)}>Accept</button>
-                                                                <button className='btn btn-danger' onClick={() => handleReject(requestss._id)}>Reject</button>
+                                                                <LoadingButton
+                                                                    className='decision_btn'
+                                                                    type="submit"
+                                                                    color="success"
+                                                                    loading={acceptLoading[requestss._id] || false}
+                                                                    variant="contained"
+                                                                    sx={{ my: 2 }}
+                                                                    onClick={() => handleAccept(requestss._id)}>Accept</LoadingButton>
+                                                                <LoadingButton
+                                                                    className='decision_btn'
+                                                                    type="submit"
+                                                                    color="error"
+                                                                    loading={rejectLoading[requestss._id] || false}
+                                                                    variant="contained"
+                                                                    sx={{ my: 2 }}
+                                                                    onClick={() => handleReject(requestss._id)}>Reject</LoadingButton>
                                                             </>
                                                         ) :
                                                             <label className="badge text-bg-primary">Done</label>

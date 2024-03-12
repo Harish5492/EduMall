@@ -4,8 +4,10 @@ const StyledLoading = styled('div')({
   width: '100%',
   height: '100%',
   display: 'flex',
+  position: "absolute",
   alignItems: 'center',
-  justifyContent: 'center',
+
+  left: "50%",
   '& img': {
     width: 'auto',
     height: '25px'
@@ -14,7 +16,7 @@ const StyledLoading = styled('div')({
     position: 'absolute',
     left: -7,
     right: 0,
-    top: 'calc(50% - 25px)'
+    top: 'calc(50% - 20px)'
   }
 });
 

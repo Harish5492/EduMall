@@ -76,6 +76,7 @@ const MyCourses = () => {
   const fetchData = async () => {
     try {
       const response = await AllCourses(token);
+      console.log(" of token", token);
       if (Array.isArray(response?.courses)) {
         setCourses(response.courses);
 

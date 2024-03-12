@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { Modal } from 'react-bootstrap';
 import { IoCloseSharp } from "react-icons/io5";
 import * as Yup from 'yup';
-import "./QuestionForm.css";
+import "./EditQuesModal.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -11,8 +11,10 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 import { MenuItem, Select } from '@mui/material';
+import { updateQuestion } from 'app/views/ApiBackend/ApiBackend';
 
-const McqForm = ({ formisOpen, formonClose, handleSubmit }) => {
+const EditQuesModal = ({ data, formisOpen, formonClose, isUpdate, handleEdit }) => {
+
     const token = useSelector((state) => state.authToken);
     const [loading, setLoading] = useState(false);
 
@@ -35,44 +37,44 @@ const McqForm = ({ formisOpen, formonClose, handleSubmit }) => {
 
     const onSubmit = async (values, actions) => {
 
-        console.log("this is values", values);
+        console.log("this is patch", data._id, "Vslurs ", values);
         setLoading(true);
 
-        const res = await handleSubmit(values);
+        // const res = await updateQuestion(token, id, values);
+        const res = await handleEdit(data._id, values);
         // const res = await Questions(token, values);
-        // if (res) {  
-        console.log("all pdrngor res", res)
-        if (res.status === 201) {
+        if (res.status === 200) {
             setTimeout(() => {
                 formonClose();
             }, 2000);
         }
 
-        toast.success("Questions Added Successfully", {
-            position: "top-center",
-            autoClose: 1000,
-            theme: "colored"
-        })
+        // toast.success("Questions Added Successfully", {
+        //     position: "top-center",
+        //     autoClose: 1000,
+        //     theme: "colored"
+        // })
 
-        // }
+        // // }
         setTimeout(() => {
             setLoading(false);
         }, 2000);
-        actions.resetForm({
-            values: initialValues,
-            errors: {},
-            touched: {},
-            isSubmitting: false,
-        });
+        // actions.resetForm({
+        //     values: initialValues,
+        //     errors: {},
+        //     touched: {},
+        //     isSubmitting: false,
+        // });
 
     };
 
 
+
     return (
-        <>
-            <Modal show={formisOpen} onHide={formonClose} centered >
+        <> {data &&
+            <Modal show={formisOpen} onHide={formonClose} centered className='Ques_modal'>
                 <Modal.Header>
-                    <Modal.Title>Multiple Choice Question Form</Modal.Title>
+                    <Modal.Title>Edit Form</Modal.Title>
                     <IoCloseSharp onClick={formonClose} style={{ cursor: 'pointer' }} />
                 </Modal.Header>
                 <Modal.Body>
@@ -80,7 +82,7 @@ const McqForm = ({ formisOpen, formonClose, handleSubmit }) => {
                         <div className="mcq-form">
                             {/* <h1 className='mcq_head'></h1> */}
                             <Formik
-                                initialValues={initialValues}
+                                initialValues={{ ...initialValues, ...data }}
                                 enableReinitialize={true}
                                 validationSchema={validationSchema}
                                 onSubmit={onSubmit}
@@ -111,34 +113,21 @@ const McqForm = ({ formisOpen, formonClose, handleSubmit }) => {
                                                 <Field type="number" id="correctOptionIndex" name="correctOptionIndex" className="form-control" />
                                                 <ErrorMessage name="correctOptionIndex" component="div" className="error-message" />
                                             </div>
-
+                                            {/* <div className="form-group">
+                                                <label htmlFor="subject" className='ques_field'>Subject: </label>
+                                                <Field type="text" id="subject" name="subject" className="form-control" />
+                                                <ErrorMessage name="subject" component="div" className="error-message" />
+                                            </div> */}
                                             <div className="form-group">
                                                 <label htmlFor="subject" className='ques_field'>Subject: </label>
                                                 <Field
-                                                    as={Select}
+                                                    // as={Select}  // Render a Select element
+                                                    id="subject"
                                                     name="subject"
                                                     className="form-control"
+                                                    disabled={true}
                                                     label="Subject"
-                                                    MenuProps={{
-                                                        style: { maxHeight: 200 },
-                                                        anchorOrigin: {
-                                                            vertical: 'bottom',
-                                                            horizontal: 'left',
-                                                        },
-                                                        transformOrigin: {
-                                                            vertical: 'top',
-                                                            horizontal: 'left',
-                                                        },
-                                                        getContentAnchorEl: null,
-                                                    }}
                                                 >
-
-
-                                                    {subjects.map((subject, index) => (
-                                                        <MenuItem key={index} value={subject} className='subject_field'>
-                                                            {subject}
-                                                        </MenuItem>
-                                                    ))}
                                                 </Field>
                                                 <ErrorMessage name="subject" component="div" className="error-message" />
                                             </div>
@@ -148,7 +137,7 @@ const McqForm = ({ formisOpen, formonClose, handleSubmit }) => {
                                                 <LoadingButton
                                                     className='sub_btnn'
                                                     type="submit"
-                                                    disabled={!(formik.isValid && (!formik.isSubmitting))}
+                                                    disabled={!formik.isValid || formik.isSubmitting}
                                                     color="primary"
                                                     loading={loading}
                                                     variant="contained"
@@ -164,9 +153,10 @@ const McqForm = ({ formisOpen, formonClose, handleSubmit }) => {
                     </div>
                 </Modal.Body>
             </Modal>
+        }
             <ToastContainer />
         </>
     )
 };
 
-export default McqForm;
+export default EditQuesModal;

@@ -7,6 +7,9 @@ import MatxLayout from './components/MatxLayout/MatxLayout';
 import materialRoutes from 'app/views/material-kit/MaterialRoutes';
 // import Rewards from './views/Rewards/Rewards';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import QuestionDetails from './views/QuestionForm/QuestionDetails';
+import Subject from './views/QuestionForm/Subject/Subject';
+import SubjectDetails from './views/QuestionForm/Subject/Subject';
 // import Requests from './views/Requests/Requests';
 
 // session pages
@@ -134,7 +137,18 @@ const routes = [
           },
           {
             path: '/questions',
-            element: <McqForm />,
+            element: <QuestionDetails />,
+            auth: authRoles.admin
+          },
+          
+          {
+            path: '/subject',
+            element: <Subject />,
+            auth: authRoles.admin
+          },
+          {
+            path: '/subject/:subId',
+            element: <SubjectDetails />,
             auth: authRoles.admin
           },
         ]
@@ -146,11 +160,10 @@ const routes = [
   },
 
   { path: '/session/404', element: <NotFound /> },
-  { path: '/session/signin', element: <JwtLogin /> },
-  { path: '/session/forgot-password', element: <ForgotPassword /> },
   { path: '/signin', element: <JwtLogin /> },
+  { path: '/session/forgot-password', element: <ForgotPassword /> },
 
-  { path: '/', element: <Navigate to="/dashboard" /> },
+  // { path: '/', element: <Navigate to="/dashboard" /> },
 ];
 
 

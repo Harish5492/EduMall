@@ -108,9 +108,9 @@ export const AllCourses = async (token, values) => {
     return error;
   }
 };
-export const ASBCourse = async (token, values) => {
+export const ASBCourse = async (token) => {
   try {
-    const response = await axios.get(`${Base_url}/ASB/getAllCourses`, values, {
+    const response = await axios.get(`${Base_url}/ASB/getAllCourses`, {
       headers: {
         "Content-Type": "application/json",
         "x-api-authorization": token,
@@ -624,5 +624,94 @@ export const Questions = async (token, values) => {
     return resp;
   } catch (error) {
     return error;
+  }
+};
+export const SubDetail = async (token) => {
+  // console.log("i am i questio napi", values);
+  try {
+    const resp = await axios.get(`${Base_url}/question/getSubjectsCount`, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-authorization": token,
+      },
+    });
+    console.log("i am i subject response", resp);
+    return resp;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const allQuestions = async (token) => {
+  console.log("iam in the question all api");
+  try {
+    const response = await axios.get(`${Base_url}/question/getAllQuestions`, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-authorization": token,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log("Error in allQuestions", error);
+  }
+};
+export const deleteQuestion = async (token, id) => {
+  console.log("iam in the question delete api", id, token);
+  try {
+    const response = await axios.delete(
+      `${Base_url}/question/deleteQuestion/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-authorization": token,
+        },
+      }
+    );
+
+    console.log("i am i questio delete response", response);
+    return response;
+  } catch (error) {
+    console.log("Error in deleteQuestion", error);
+  }
+};
+export const updateQuestion = async (token, id, values) => {
+  console.log("iam in the question patch api", id, token);
+  try {
+    const response = await axios.put(
+      `${Base_url}/question/updateQuestion/${id}`,
+      values,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-authorization": token,
+        },
+      }
+    );
+
+    console.log("i am i questio patch response", response);
+    return response;
+  } catch (error) {
+    console.log("Error in deleteQuestion", error);
+  }
+};
+export const questionById = async (token, id) => {
+  console.log("iam in the getSUbid patch api", id, token);
+  try {
+    const response = await axios.get(
+      `${Base_url}/question/getQuestion/${id}`,
+
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-authorization": token,
+        },
+      }
+    );
+
+    console.log("i am i getquestBy id response", response);
+    return response;
+  } catch (error) {
+    console.log("Error in getBuidQuesuestion", error);
   }
 };
