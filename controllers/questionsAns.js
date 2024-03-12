@@ -24,6 +24,32 @@ class QuestionsAns{
       res.status(500).send('Internal Server Error');
     }
   }
+ async getSubjectCount(req, res) {
+    try {
+        console.log("inside getSubjects");
+        const subjects = await Question.aggregate([
+            {
+                $group: {
+                    _id: "$subject",
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    subject: "$_id",
+                    count: 1
+                }
+            }
+        ]);
+
+        res.json({ subjects, status: true });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
   
   async getAllQuestions(req,res){ 
     try {
@@ -34,6 +60,61 @@ class QuestionsAns{
       console.error(err.message);
       res.status(500).send('Internal Server Error');
     }
+  }
+   async getAllQuestionsDirect(req, res) {
+    try {
+      console.log("inside getallquestions")
+      const questions = await Question.find().select('_id questionText createdAt subject ');
+      res.json({questions,status:true});
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Internal Server Error');
+    }
+  } async getQuestionById (req, res) {
+    try {
+      console.log("inside getQuestions",req.params.id)
+      const {id} = req.params
+      
+      const questions = await Question.findById(id);
+      res.json({questions,status:true});
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Internal Server Error');
+    } 
+  }
+ async updateQuestion (req, res)  {
+    try {
+        const { id } = req.params;
+        const updatedQuestion = req.body;
+  
+        const question = await Question.findByIdAndUpdate(id, updatedQuestion, { new: true });
+        if (!question) {
+            return res.status(404).json({ message: 'Question not found' });
+        }
+  
+        res.json({ question, status: true });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Internal Server Error');
+    }
+  }
+
+  // Route for deleting a question
+  async deleteQuestion (req, res) {
+  try {
+    console.log("inside deleteQuestion",req.params)
+      const { id } = req.params;
+
+      const deletedQuestion = await Question.findByIdAndDelete(id);
+      if (!deletedQuestion) {
+          return res.status(404).json({ message: 'Question not found' });
+      }
+
+      res.json({ message: 'Question deleted successfully', status: true });
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Internal Server Error');
+  }
   }
   
   async Submit(req,res){ try {
