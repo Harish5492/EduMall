@@ -46,7 +46,7 @@ const Quiz = () => {
             <div className="container">
                 <div className="row">
                     {subjects && subjects.length > 0 ? (
-                        subjects.map((subject, index) => (
+                        subjects?.map((subject, index) => (
                             <div key={index} className="col-md-4" onClick={() => handleClick(subject)}>
                                 <div className='row'>
                                     <div className="col-md-12">
@@ -61,7 +61,7 @@ const Quiz = () => {
                         ))
                     ) : (
                         <div className="col-md-12">
-                            <p>No subjects available.</p>
+                            <p>No subjects available at the moment please try after some time.</p>
                         </div>
                     )}
                 </div>

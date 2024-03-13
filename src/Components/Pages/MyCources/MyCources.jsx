@@ -1,14 +1,46 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect }  from "react";
 import Rate from "../Rate/Rate";
 import { Link, useNavigate } from "react-router-dom";
 import SpinerLogo from "../../CommonComponents/SpinerLogo";
 import "./MyCources.scss";
+import { MyCourcesApi } from '../../Api';
+import { useSelector,useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import {logout} from "../../../store/userSlice";
+
 
 const MyCources = () => {
+  const [courses, setCourses] = useState([]);
+  const token = useSelector((state) => state.user.token);
   const navigate = useNavigate();
-  const courses = useSelector((state) => state.user.myCourses);
-  console.log(courses,"coursescourses>>>>>>>>>>");
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await MyCourcesApi(token);
+        if (response && response.myCourses) {
+          setCourses(response.myCourses);
+          console.log(response.myCourses, "responseresponse");
+        } else {
+          if(response === "error : TokenExpiredError: jwt expired"){
+            toast.error("Your session is expired you have to login", {
+              position: "top-center",
+              autoClose: 2000,
+              theme: "colored"
+              })
+             dispatch(logout())
+          }else{
+           console.error('Invalid response format:', response);
+          }
+     }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, token]);
 
   const handleLesson = (courseId) => {
     navigate(`/lessons/${courseId}`);
