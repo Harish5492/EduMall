@@ -58,7 +58,7 @@ class affiliate {
             if(check){
                  for (let elem of check.courseDetails){
                     if(elem.courseId == id){
-                        console.log("insie",elem.courseId) 
+                        console.log("inside",elem.courseId) 
                         // const token 
                         return res.json({ message: "token already sent", status: true,token: elem.affiliateToken  })
                     }

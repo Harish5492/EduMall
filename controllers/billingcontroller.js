@@ -109,7 +109,7 @@ class BillingController {
       // const que = `${queryString}&student=${student}`
       // ... (previous code)
       const encodedToken = encodeURIComponent(affiliateToken);
-      console.log("daffffffffffffffffaaaaaaaaaaaa",affiliateToken,"fffffffff",encodedToken)
+
       const que = `${queryString}&student=${student}&affiliateToken=${encodedToken}&totalPrice=${totalPrice}`;
 
 
@@ -188,7 +188,7 @@ class BillingController {
       }
     })
       .catch((err) => {
-        console.error("rrrrrrrrrrrrrrr", err);
+        console.error("Error is ", err);
         res.status(500).send({ msg: err.message });
       });
 
