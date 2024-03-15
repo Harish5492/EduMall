@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// console.log(mongoose.models)
 const userResponseSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,

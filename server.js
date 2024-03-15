@@ -10,7 +10,7 @@ const {attachWebSocket,sendNotificationToAll} = require('./websocket/websocket')
 const app = express(); 
 const server = http.createServer(app);
 
-const port = 8000;
+const port = 3000;
 
 // Connect to the database
 mongoDB();

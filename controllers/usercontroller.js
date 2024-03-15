@@ -348,7 +348,7 @@ class UserController {
       } else {
         res.json({ message: "User not found", status: false });
       }
-    } catch (error) {
+    } catch (error) {  
       res.status(500).send(error.message);
     }
   }
