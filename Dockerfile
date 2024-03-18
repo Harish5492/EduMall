@@ -1,38 +1,20 @@
-# syntax=docker/dockerfile:1
+    # Use an official Node.js runtime as a parent image
+    FROM node:18.18.0
 
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Dockerfile reference guide at
-# https://docs.docker.com/go/dockerfile-reference/
+    # Set the working directory in the container
+    WORKDIR /app
 
-# Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
+    # Copy package.json and package-lock.json to the working directory
+    COPY package*.json ./
 
-ARG NODE_VERSION=18.17.1
+    # Install application dependencies
+    RUN npm install
 
-FROM node:${NODE_VERSION}-alpine
+    # Copy the rest of the application code to the working directory
+    COPY . .
 
-# Use production node environment by default.
-ENV NODE_ENV production
+    # Expose the port your application will run on (3000 based on your app's configuration)
+    EXPOSE 3000
 
-
-WORKDIR /usr/src/app
-
-# Download dependencies as a separate step to take advantage of Docker's caching.
-# Leverage a cache mount to /root/.npm to speed up subsequent builds.
-# Leverage a bind mounts to package.json and package-lock.json to avoid having to copy them into
-# into this layer.
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=package-lock.json,target=package-lock.json \
-    --mount=type=cache,target=/root/.npm \
-    npm ci --omit=dev
-
-# Run the application as a non-root user.
-USER node
-
-# Copy the rest of the source files into the image.
-COPY . .
-
-# Expose the port that the application listens on.
-EXPOSE 3000
-
-# Run the application.
-CMD npm start
+    # Define the command to run your application
+    CMD [ "npm", "run", "watch" ]

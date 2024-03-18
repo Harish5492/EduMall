@@ -10,6 +10,7 @@ const {
 } = require('../models/affiliatemodel');
 const crypto = require('crypto');
 const CryptoJS = require('crypto-js');
+const { Phonepay } = require('../config/config');
 require('dotenv').config();
 const paymentKeyIndex = process.env.PAYMENTKEYINDEX;
 const paymentKey = process.env.PAYMENTKEY;
@@ -69,7 +70,7 @@ class paymentHelper {
       merchantUserId: paymentMerchantUserId,
       merchantTransactionId: merchantTransactionId,
       amount: totalPrice * 100,
-      redirectUrl: `http://10.10.2.29:8000/user/payment/checkStatus/${merchantTransactionId}?${que}`,
+      redirectUrl: `${Phonepay.redirectUrlBackend}/user/payment/checkStatus/${merchantTransactionId}?${que}`,
       // redirectUrl: `http://10.10.2.82:8000/user/payment/checkStatus/${merchantTransactionId}?${ur}`,
       redirectMode: 'REDIRECT',
       paymentInstrument: {
@@ -84,7 +85,7 @@ class paymentHelper {
       merchantUserId: paymentMerchantUserId,
       merchantTransactionId: merchantTransactionId,
       amount: totalPrice * 100,
-      redirectUrl: `http://10.10.2.29:8000/admin/adminArea/sendAmountToSubAdmin/checkRewardStatus/${merchantTransactionId}?${que}`,
+      redirectUrl: `${Phonepay.redirectUrlBackend}/admin/adminArea/sendAmountToSubAdmin/checkRewardStatus/${merchantTransactionId}?${que}`,
       // redirectUrl: `http://10.10.2.82:8000/user/payment/checkStatus/${merchantTransactionId}?${ur}`,
       redirectMode: 'REDIRECT',
       paymentInstrument: {

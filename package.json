@@ -2,9 +2,13 @@
   "name": "class1",
   "version": "1.0.0",
   "main": "index.js",
-  "engines": {"node":"18.x"},
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
-    "start": "set DOTENV_CONFIG_PATH=./.env &&  nodemon  dotenv/config server.js",
+    "start": "nodemon  dotenv/config server.js && dotenv_config_path=./.env",
+    "watch": "nodemon --inspect -e js -w ./src -x npm run watch-serve",
+    "watch-serve": "NODE_ENV=dev node -r dotenv/config ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

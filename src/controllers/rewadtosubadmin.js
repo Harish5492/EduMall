@@ -4,7 +4,8 @@ const model = require('../models/usermodel');
 const Helper = require('../helper/index');
 const axios = require('axios');
 const rewardPayment = require('../models/rewardPayment')
-const { AffiliateMarketings } = require('../models/affiliatemodel')
+const { AffiliateMarketings } = require('../models/affiliatemodel');
+const { Phonepay } = require('../config/config');
 const paymentMerchantId = 'PGTESTPAYUAT'
 const { paymentHelper } = Helper.module
 
@@ -141,7 +142,7 @@ class RewardToSubAdminController {
                 await paymentHelper.updateRewardEarned(totalPrice, SubAdminId)
                 await paymentHelper.deleteRequest(SubAdminId)
                 // return res.status(400).send({ success: true, message: "Payment Successfull" });
-                return res.redirect('http://10.10.2.37:3000/Requests')
+                return res.redirect(`${Phonepay.redirectUrlAdmin}/Requests`)
 
 
             } else if (response.data.success === false && response.data.code != "PAYMENT_PENDING") {

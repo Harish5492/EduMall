@@ -3,14 +3,15 @@ const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mongoDB = require('./config/database');
-const Api = require('./routers/index');
-const {attachWebSocket,sendNotificationToAll} = require('./websocket/websocket');
+const mongoDB = require('./src/config/database');
+const Api = require('./src/routers/index');
+// const {attachWebSocket,sendNotificationToAll} = require('./websocket/websocket');
 
 const app = express(); 
+
 const server = http.createServer(app);
 
-const port = 8000;
+const port = 3008;
 
 // Connect to the database
 mongoDB();
@@ -30,6 +31,16 @@ app.use('/user', Api.billingRouter);
 app.use('/user', Api.courseRouter); 
 app.use('/user', Api.referalRouter); 
 app.use('/user', Api.affiliateRouter);
+app.use('/status', (_req, res) => {
+  return res.send({
+    isSuccess: true,
+    memory: process.memoryUsage(),
+    results: {
+        message: `App is running on Port ${port}.`,
+    },
+    Date: new Date(),
+})
+});
 app.use('/admin/adminArea', Api.rewardRouter);
 app.use('/ASB',Api.asbRouter)
 app.use('/admin/adminArea', Api.adminRouter); 
@@ -37,7 +48,7 @@ app.use('/question/', Api.questionAnsRouter);
 
 
 // Attach WebSocket
-attachWebSocket(server);
+// attachWebSocket(server);
 
 // Start the server
 server.listen(port, (err) => {

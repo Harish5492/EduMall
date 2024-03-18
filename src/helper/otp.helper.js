@@ -2,10 +2,6 @@ const bcrypt = require('bcrypt');
 const model = require('../models/usermodel');
 const otpmodel = require('../models/otpmodel')
 require('dotenv').config();
-const accountSid = process.env.accountSid;
-const authToken = process.env.authToken;
-
-const client = require('twilio')(accountSid, authToken);
 const sgMail = require('@sendgrid/mail');
 const CryptoJS = require("crypto-js");
 const OTPKEY = process.env.OTPKEY
@@ -75,12 +71,15 @@ class OtpHelper {
  }
   
  sendOTPOnMobile(otp) {
-  client.messages
+  if(client) {
+    client.messages
     .create({
       body: `Your OTP is ${otp}`,
       from: '+12182280015',
       to: '+918872512811'
-    })    
+    })  
+  }
+    
 }
 
   async sendOTPOnEmail(otp) {

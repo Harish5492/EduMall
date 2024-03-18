@@ -20,5 +20,5 @@ userRouter.post('/changePassword',validateSignup[5],validateSignup[6],handleVali
 userRouter.get('/myCourses',authMiddleware,UserController.myCourses);
 
 
-userRouter.get('/test',UserController.test)
+// userRouter.get('/test',UserController.test)
 module.exports = userRouter;   

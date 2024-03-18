@@ -1,0 +1,21 @@
+  version: '3'
+  services:
+    app:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      ports:
+        - "3000:3000"
+    env_file:
+      - .env
+    networks:
+      my_network:
+        ipv4_address: 172.16.238.10
+
+networks:
+  my_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+

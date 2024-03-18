@@ -7,10 +7,11 @@ const axios = require('axios');
 const Helper = require('../helper/index');
 const { decode } = require('jsonwebtoken');
 const { sendNotificationToAll } = require('../websocket/websocket');
+const { Phonepay } = require('../config/config');
 const { paymentHelper } = Helper.module
 require("dotenv").config();
-// const paymentMerchantId = process.env.MERCHANTID
-const paymentMerchantId = 'PGTESTPAYUAT'
+const paymentMerchantId = process.env.MERCHANTID
+// const paymentMerchantId = 'PGTESTPAYUAT'
 
 class BillingController {
 
@@ -177,7 +178,7 @@ class BillingController {
         console.log("insideUpdateCheck", affiliateToken)
         // return res.status(200).send({ success: true, message: "Payment Success" });
 
-        return res.redirect('http://10.10.2.30:3000/auth/mycourses')
+        return res.redirect(`${Phonepay.redirectUrlUser}/mycourses`)
 
       } else if (response.data.success === false && response.data.code != "PAYMENT_PENDING") {
         paymentHelper.updateStatus(merchantTransactionId, "Failure")
