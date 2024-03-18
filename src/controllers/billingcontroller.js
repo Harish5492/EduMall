@@ -109,9 +109,14 @@ class BillingController {
       
       // const que = `${queryString}&student=${student}`
       // ... (previous code)
-      const encodedToken = encodeURIComponent(affiliateToken);
 
-      const que = `${queryString}&student=${student}&affiliateToken=${encodedToken}&totalPrice=${totalPrice}`;
+      let que = `${queryString}&student=${student}&totalPrice=${totalPrice}`;
+
+      if(affiliateToken) {
+        const encodedToken = encodeURIComponent(affiliateToken);
+        que = que + `&affiliateToken=${encodedToken}`
+      }
+
 
 
       const merchantTransactionId = paymentHelper.generateTransactionId()
@@ -170,7 +175,7 @@ class BillingController {
         await paymentHelper.studentEnrolled(student, course)
         sendNotificationToAll(`Congratulations, successfully purchased`);
 
-        if (affiliateToken.length>1) {
+        if (affiliateToken && affiliateToken.length>1) {
           const affiliateToken1 = decodeURIComponent(affiliateToken);
           console.log("decoded",affiliateToken1)
           await paymentHelper.updateReward(affiliateToken1, totalPrice)
